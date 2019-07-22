@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/webjars/layui/2.4.5/css/layui.css}">
+    <link rel="stylesheet" th:href="@{/css/common/common.css}">
+    <link rel="stylesheet" th:href="@{/css/common/header.css}">
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+
+
+</head>
+<body>
+<div class="header" th:fragment="header">
+    <div class="layui-row">
+        <div class="layui-col-md6">
+            <ul class="layui-nav left ">
+                <li class="layui-nav-item">
+                    <a th:href="@{/index}">首页</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a th:href="@{/customType}">分类</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a th:href="@{/archives}">归档</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a th:href="@{/tag}">标签</a>
+                </li>
+
+                <li class="layui-nav-item">
+                    <a th:href="@{/firendlink}">友链</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a th:href="@{/aboutme}">关于我</a>
+                </li>
+            </ul>
+        </div>
+        <div class="layui-col-md6" style="text-align: right">
+            <ul class="layui-nav right">
+                <li class="layui-nav-item">
+                    <a th:href="@{/editor}">写博客</a>
+                </li>
+                <li class="layui-nav-item" sec:authorize="!isAuthenticated()">
+                    <a th:href="@{/login}">登录</a>
+                </li>
+                <li class="layui-nav-item" sec:authorize="!isAuthenticated()">
+                    <a th:href="@{/register}">注册</a>
+                </li>
+
+                <li class="layui-nav-item" sec:authorize="isAuthenticated()">
+                    <a href="javascript:;"><img id="headerAvatar"style="display: inline-block;width:30px;height:30px;border-radius: 50%;" th:src="${session.userInfo.avatarUrl}" class="layui-nav-img" th:text="${session.userInfo.userName}"><span class="layui-nav-more"></span></a>
+                    <dl class="layui-nav-child">
+                        <dd><a th:href="@{/user/userInfo}">个人主页</a></dd>
+                        <dd><a th:href="@{/logout}">退出</a></dd>
+                        <dd><a href="javascript:;">反馈</a></dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<script>
+    //一般直接写在一个js文件中
+    layui.use(['layer', 'form','element'], function(){});
+</script>
+</body>
+</html>

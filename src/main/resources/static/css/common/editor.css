@@ -1,0 +1,38 @@
+.main{
+    width:96%;
+    margin: 10px auto 100px;
+}
+
+label{
+    text-align: left!important;
+    margin-left:0 !important;
+    margin-right:0 !important;
+    padding-left:0 !important;
+    padding-right:0 !important;
+}
+
+.tag{
+    display: inline-block;
+    color: #761dff;
+    margin-right: 5px;
+}
+
+
+.tag span{
+    background-color: #cecece;
+}
+
+.footer{
+    position: fixed;
+    width: 100%;
+    left: 0;
+    bottom: 0;
+    z-index: 1000;
+    padding-bottom: 3px;
+}
+
+.footer{
+    text-align: right;
+    margin:0 auto;
+    width:98%;
+}

@@ -1,0 +1,18 @@
+a:hover {
+    color: #4285f4!important;
+}
+
+
+textarea{
+    resize:none!important;
+}
+
+.fl{
+    float:left;
+}
+.fr{
+    float:right;
+}
+.clear{
+    clear:both;
+}

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head th:replace="/html/common/common_head :: common_head(~{::title},~{::link},~{::script})">
+    <title>设置</title>
+    <link rel="stylesheet" th:href="@{/css/user/securitySetting.css}">
+    <script th:src="@{/js/user/customTypeManager.js}"></script>
+    <script type="text/html" id="opt">
+        <a class="layui-btn layui-btn-danger layui-btn-sm" lay-event="del">删除</a>
+    </script>
+</head>
+<body>
+<div th:replace="/html/common/header::header"></div>
+<div th:replace="/html/user/user::side"></div>
+<div class="layui-body">
+    <div class="main">
+        <form class="layui-form">
+            <div class="main-top"></div>
+            <div class="main-mid">
+                <table id="table" class="layui-table" lay-skin="line row">
+                    <thead>
+                    <tr>
+                        <td style="width:80%;">
+                            分类
+                        </td>
+                        <td style="width:20%;">
+                            操作
+                        </td>
+                    </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div class="main-bottom">
+                <div class="layui-col-md2">
+                    <button class="layui-btn addBtn" type="button">添加分类</button>
+                </div>
+                <div class="layui-col-md10">
+                    <button class="layui-btn saveBtn" type="button">保存</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

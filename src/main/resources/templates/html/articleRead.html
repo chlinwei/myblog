@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head th:replace="/html/common/common_head :: common_head(~{::title},~{::link},~{::script})">
+    <title>设置</title>
+    <script th:src="@{/js/articleRead.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/articleRead.css}">
+    <link rel="stylesheet" th:href="@{/css/common/comment.css}">
+
+    <script th:inline="javascript">
+        var articleId = [[${articleId}]];
+    </script>
+    <script th:src="@{/js/common/comment.js}"></script>
+
+    <!--editormd编辑库-->
+    <script th:src="@{/webjars/jquery/3.1.1/jquery.js}"></script>
+    <link rel="stylesheet" th:href="@{/webjars/editor.md/1.5.0/css/editormd.css}">
+    <link rel="stylesheet" th:href="@{/webjars/editor.md/1.5.0/css/editormd.logo.css}">
+    <link rel="stylesheet" th:href="@{/webjars/editor.md/1.5.0/css/editormd.preview.css}">
+    <script th:src="@{/webjars/editor.md/1.5.0/editormd.js}"></script>
+    <!--editormd展示库,注意:下面引入的库是有顺序的-->
+    <script th:src="@{/webjars/editor.md/1.5.0/lib/marked.min.js}"></script>
+    <script th:src="@{/webjars/editor.md/1.5.0/lib/prettify.min.js}"></script>
+    <script th:src="@{/webjars/editor.md/1.5.0/lib/raphael.min.js}"></script>
+    <script th:src="@{/webjars/editor.md/1.5.0/lib/underscore.min.js}"></script>
+    <script th:src="@{/webjars/editor.md/1.5.0/lib/flowchart.min.js}"></script>
+    <script th:src="@{/webjars/editor.md/1.5.0/lib/jquery.flowchart.min.js}"></script>
+    <script th:src="@{/webjars/editor.md/1.5.0/lib/sequence-diagram.min.js}"></script>
+</head>
+<body>
+<div th:replace="/html/common/header::header"></div>
+<div class="main">
+    <div class="article">
+        <div class="article-top">
+            <div class="articleTitle-div">
+                <h1 data-id="" id="articleTitle"></h1>
+                <input type="hidden" class="authorId">
+            </div>
+            <div class="articleInfo-div">
+                <div id="articleType" class="articleType"></div>
+                <i class="layui-icon layui-icon-date" style="font-size:22px"><span id="createTime" style="font-size:14px;"></span></i>
+            </div>
+        </div>
+        <div class="article-content">
+            <div id="content">
+                <textarea style="display:none;" name="editormd-markdown-doc" id="mdText"></textarea>
+            </div>
+        </div>
+        <div class="article-bottom">
+            <div class="div1">
+                <div class="div1-left"></div>
+                <div class="div1-right">
+                    <a id="customTypeName"></a>
+                </div>
+                <div class="layui-clear"></div>
+            </div>
+            <div class="div2">
+                <div class="last">
+                    <a>
+                        <i class="layui-icon layui-icon-left"></i>
+                        <span id="last">无</span>
+                    </a>
+                </div>
+                <div class="next">
+                    <a>
+                        <span id="next">无</span>
+                        <i class="layui-icon layui-icon-right"></i>
+                    </a>
+                </div>
+                <div class="layui-clear"></div>
+            </div>
+            <div class="div3">
+                <div class="div3-left">
+                    <a href="javascript:void(0);" class="articleLikeBtn">
+                        <i class="layui-icon layui-icon-praise like-icon"><span class="like" id="like">&nbsp;0</span></i>
+                    </a>
+                </div>
+                <div class="div3-right"></div>
+                <div class="layui-clear"></div>
+            </div>
+        </div>
+    </div>
+    <div class="comment">
+        <div class="comment-top">
+            <!--登录了-->
+            <div class="comment-wrapper" sec:authorize="isAuthenticated()">
+                <div class="comment-avatar fl">
+                    <a><img th:src="${session.userInfo.avatarUrl}" style="width:48px;height:48px"></a>
+                </div>
+                <div class="comment-input fr">
+                    <textarea class="comment_content" placeholder="这里评论"></textarea>
+                </div>
+                <div class="clear"></div>
+                <div class="commentBtn_wrapper">
+                    <button class="commentCancel">取消</button>
+                    <button class="commentPub">发布</button>
+                </div>
+            </div>
+            <!--没有登录-->
+            <div class="comment-wrapper" sec:authorize="!isAuthenticated()">
+                <div class="comment-avatar fl">
+                    <a><img th:src="@{/image/avatar.png}" style="width:48px;height:48px"></a>
+                </div>
+                <div class="comment-input fr">
+                    <div class="noLoginBtn">
+                        请先<a th:href="@{/login}">登录</a>后在评论
+                    </div>
+                </div>
+                <div class="clear"></div>
+                <div class="commentBtn_wrapper">
+                </div>
+            </div>
+        </div>
+        <div class="comment-bottom">
+            <div class="comment-number">
+                <p><span class="commentSum">0</span>条评论</p>
+            </div>
+            <div class="comment-list"></div>
+            <div id="pagination"></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

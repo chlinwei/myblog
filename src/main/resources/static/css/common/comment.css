@@ -1,0 +1,126 @@
+
+.comment-input{
+    width:90%;
+    text-align: center;
+    height: 70px;
+    color: #777;
+    background-color: #e5e9ef;
+    line-height: 70px;
+}
+
+.nologinbtn{
+    height: 70px;
+    color: #777;
+    background-color: #e5e9ef;
+}
+.noLoginBtn a {
+    padding: 4px 9px;
+    margin: 0 3px;
+    color: #fff;
+    background-color: #00a1d6;
+    border-radius: 4px;
+}
+.comment-input textarea {
+    height: 70px;
+    width: 100%;
+    resize: none;
+    text-align: left;
+    padding: 15px 15px;
+    box-sizing: border-box;
+    border-radius: 5px;
+}
+
+.commentBtn_wrapper button {
+    width: 65px;
+    height: 30px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.commentBtn_wrapper .commentCancel {
+    color: #239f39;
+    background-color: #FFF;
+}
+.commentBtn_wrapper .commentPub {
+    color: #FFF;
+    background-color: #fe8b8a;
+}
+.commentBtn_wrapper {
+    text-align: right;
+}
+.comment-number{
+    text-align: left;
+}
+
+.commentSum {
+    font-size: 15px;
+    font-weight: 600;
+}
+.commentBtn_wrapper{
+    margin-bottom: 20px;
+}
+
+.comment-list .user-face img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.comment-list .user-face {
+    margin: 24px 0 0 5px;
+}
+
+.comment-list .con {
+    width: 500px;
+    margin-left: 50px;
+    padding: 22px 0 14px;
+    border-top: 1px solid #e5e9ef;
+}
+.comment-list .con .content {
+    line-height: 20px;
+    padding: 2px 0;
+    font-size: 14px;
+}
+.comment-list .con .info {
+    color: #99a2aa;
+    line-height: 26px;
+    font-size: 12px;
+}
+.comment-list .con .info>span {
+    cursor: pointer;
+    margin-right: 20px;
+}
+
+.comment-list .replyBox .reply-face img {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.comment-list .replyBox .reply-item {
+    padding: 10px 0;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+}
+.comment-list .replyBox .reply-item .reply-face {
+    margin-right: 10px;
+}
+.comment-list .replyBox .reply-face img {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+.comment-list .replyBox .reply-item .reply-con {
+    display: inline-block;
+}
+.comment-list .con .replyBox .reply-con .userName {
+    margin-right: 15px;
+    color: #6d757a;
+}
+.comment-list .con .reply-con a.content {
+    color: #00a1d6;
+}
+
+

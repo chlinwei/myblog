@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head th:replace="/html/common/common_head :: common_head(~{::title},~{::link},~{::script})">
+    <title>设置</title>
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+    <script th:src="@{/js/index.js}"></script>
+</head>
+<body>
+<div th:replace="/html/common/header::header"></div>
+<div class="main layui-row layui-col-space15">
+    <div class="layui-col-md3">
+        <div class="main-left">
+            <!--博主信息-->
+            <div class="myCard">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md4">
+                        <div class="img_wrapper"><img id="" th:src="@{/image/avatar.png}" style="width:100%;height:100%;"></div>
+                    </div>
+                    <div class="layui-col-md8">
+                        <div id="name">林威</div>
+                        <div id="sign">多年以后，愿你的城市，有清风，有烈酒，也有人是你的归途。</div>
+                    </div>
+                </div>
+                <div class="contact">
+                    <a style="color:green">微信：shenge6</a>
+                </div>
+            </div>
+            <!--分类-->
+            <div class="customTypeList-div myCard">
+                <div class="aside-title">
+                    <div class="layui-row">
+                        <div class="layui-col-md6">
+                            分类
+                        </div>
+                        <div class="layui-col-md6" style="text-align: right">
+                            <a th:href="@{/customType}">更多</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="aside-content">
+                    <ul class="customTypeList">
+                        <li><a th:href="@{/customType/1}">类型1</a></li>
+                        <li><a th:href="@{/customType/2}">类型2</a></li>
+                        <li><a th:href="@{/customType/2}">类型3</a></li>
+                        <li><a th:href="@{/customType/1}">类型4</a></li>
+                        <li><a th:href="@{/customType/1}">类型5</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!--最新评论-->
+            <div class="comment-div myCard">
+                <div class="aside-title">
+                    最新评论
+                </div>
+                <div class="aside-content"></div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="layui-col-md6">
+        <div class="main-mid">
+            <div class="articleList"></div>
+            <div id="pagination"></div>
+        </div>
+    </div>
+    <div class="layui-col-md3">
+        <div class="main-left">
+            ok
+        </div>
+    </div>
+</div>
+</body>
+</html>

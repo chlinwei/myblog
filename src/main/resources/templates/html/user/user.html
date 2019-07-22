@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head th:replace="/html/common/common_head :: common_head(~{::title},~{::link},~{::script})">
+    <title>林威博客</title>
+    <link rel="stylesheet" th:href="@{/css/user/userInfo.css}">
+    <link rel="stylesheet" th:href="@{/css/user/user.css}">
+
+    <script th:src="@{/js/user/userInfo.js}"></script>
+</head>
+<body>
+<div th:replace="/html/common/header::header"></div>
+<!--公共侧边栏-->
+<div class="layui-side layui-bg-black" th:fragment="side">
+    <link rel="stylesheet" th:href="@{/css/user/user.css}">
+    <div class="layui-side-scroll">
+        <ul class="layui-nav layui-nav-tree">
+            <li class="layui-nav-item lay-unselect">
+                <a th:href="@{/user/userInfo}">个人资料</a>
+            </li>
+            <li class="layui-nav-item">
+                <a th:href="@{/user/securitySetting}">安全设置</a>
+            </li>
+            <li class="layui-nav-item"><a th:href="@{/user/articleManager}">文章管理</a></li>
+            <li class="layui-nav-item"><a th:href="@{/user/customTypeManager}">个人分类</a></li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>

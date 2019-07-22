@@ -1,0 +1,20 @@
+.avatar-div{
+    margin-bottom: 30px;
+}
+
+
+.userInfo-div [class^="layui-col"]{
+    margin-bottom: 9px;
+}
+
+
+.userInfo-div label{
+    font-weight: 700;
+    font-size: 17px;
+    color: #969696;
+    margin-left:0;
+    padding-left:0;
+    text-align: left;
+}
+
+

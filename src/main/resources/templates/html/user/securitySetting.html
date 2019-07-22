@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head th:replace="/html/common/common_head :: common_head(~{::title},~{::link},~{::script})">
+    <title>设置</title>
+    <link rel="stylesheet" th:href="@{/css/user/securitySetting.css}">
+    <script th:src="@{/js/user/securitySetting.js}"></script>
+
+</head>
+<body>
+<div th:replace="/html/common/header::header"></div>
+<div th:replace="/html/user/user::side"></div>
+<div class="layui-body">
+    <div class="main">
+        <form class="layui-form">
+            <div class="layui-form-item">
+                <div class="layui-col-md6">
+                    <label class="layui-form-label">新密码</label>
+                    <div class="layui-input-block">
+                        <input type="password" name="newPasswd" lay-verify="newPasswd" autocomplete="off" placeholder="" class="layui-input">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-col-md6">
+                    <label class="layui-form-label">确认密码</label>
+                    <div class="layui-input-block">
+                        <input type="password" name="surePasswd" lay-verify="surePasswd" autocomplete="off" placeholder="" class="layui-input">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="submit">保存</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+</body>
+</html>

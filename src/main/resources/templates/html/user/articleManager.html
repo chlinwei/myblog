@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head th:replace="/html/common/common_head :: common_head(~{::title},~{::link},~{::script})">
+    <title>设置</title>
+    <link rel="stylesheet" th:href="@{/css/user/articleManager.css}">
+    <script th:src="@{/js/user/articleManager.js}"></script>
+</head>
+<body>
+<div th:replace="/html/common/header::header"></div>
+<div th:replace="/html/user/user::side"></div>
+
+<script type="text/html" id="opt">
+    <a class="layui-btn layui-btn-sm" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-sm" lay-event="del">删除</a>
+</script>
+<div class="layui-body">
+    <div class="main">
+        <form class="layui-form">
+            <div style="margin-bottom:20px;" class="main-top">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md3">
+                        <div class="layui-input-inline">
+                            <select name="articleType">
+                                <option value="0" selected>请选择</option>
+                                <option value="1">原创</option>
+                                <option value="2">转载</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-col-md3">
+                        <div class="layui-input-inline">
+                            <select name="customTypeId">
+                                <option value="0">全部分类</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-col-md6" style="text-align: left">
+                        <div class="layui-input-inline">
+                            <button class="layui-btn" lay-submit lay-filter="find">查找</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="main-mid">
+                <table id="table" lay-filter="table" ></table>
+            </div>
+            <div class="main-bottom">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md1">
+                        <div style="height:38px;line-height: 38px;text-align: right">移动到</div>
+                    </div>
+                    <div class="layui-col-md3">
+                        <div class="layui-input-inline">
+                            <select name="customTypeId" lay-filter="customTypeId" class="customTypeId">
+                                <option value="">选择分类</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-col-md8">
+                        <button class="layui-btn" lay-submit lay-filter="removeBtn">删除</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

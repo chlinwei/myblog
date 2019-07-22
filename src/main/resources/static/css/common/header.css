@@ -1,0 +1,10 @@
+.header{
+    font-size:15px;
+}
+
+.header .left{
+    padding-left:100px;
+}
+.header .right{
+    padding-right:100px;
+}

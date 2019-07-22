@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:fragment="common_head(title,links,scripts)">
+    <meta charset="UTF-8">
+    <title th:replace="${title}">Title</title>
+    <link rel="stylesheet" th:href="@{/webjars/layui/2.4.5/css/layui.css}">
+    <script th:src="@{/webjars/layui/2.4.5/layui.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/common/common.css}">
+    <link rel="stylesheet" th:href="@{/css/common/header.css}">
+
+    <script th:inline="javascript">
+        var contextPath=[[${#httpServletRequest.getContextPath()}]];
+        var userInfo = [[${session.userInfo}]];
+    </script>
+
+    <script>
+        layui.use(['layer', 'form','element'], function(){ });
+        layui.config({
+            base:contextPath +'/js/common/'
+        }).extend({ //设定模块别名
+            comment: 'comment',
+            article: 'article',
+            lwUtil:'lwUtil'
+        });
+    </script>
+    <th:block th:replace="${scripts}" />
+    <th:block th:replace="${links}" />
+</head>
+</body>
+</html>

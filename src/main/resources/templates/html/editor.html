@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head th:replace="/html/common/common_head :: common_head(~{::title},~{::link},~{::script})" th:fragment="editor_head">
+    <title>设置</title>
+    <!--editormd-->
+    <link rel="stylesheet" th:href="@{/webjars/editor.md/1.5.0/css/editormd.css}">
+    <link rel="stylesheet" th:href="@{/webjars/editor.md/1.5.0/css/editormd.logo.css}">
+    <link rel="stylesheet" th:href="@{/webjars/editor.md/1.5.0/css/editormd.preview.css}">
+    <script th:src="@{/webjars/jquery/3.1.1/jquery.js}"></script>
+    <script th:src="@{/webjars/editor.md/1.5.0/editormd.js}"></script>
+
+    <!--自己的js-->
+    <script th:src="@{/js/editor.js}"></script>
+    <script th:src="@{/js/common/initEditormd.js}"></script>
+    <script th:src="@{/js/lib/ifvisible.min.js}"></script>
+
+    <!--自己的css-->
+    <link rel="stylesheet" th:href="@{/css/common/editor.css}">
+
+</head>
+<body>
+<div th:replace="/html/common/header::header"></div>
+<div class="main" th:fragment="editor">
+    <form class="layui-form" id="form">
+        <div class="title-div">
+            <div class="layui-col-md1">
+                <div class="layui-form-item">
+                    <div class="layui-input-inline" style="width:100%;">
+                        <select name="articleType">
+                            <option value="1">原创</option>
+                            <option value="2">转载</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md11">
+                <div class="layui-form-item">
+                    <div class="layui-input-block" style="margin-left:0;">
+                        <input type="text" name="articleTitle" required  lay-verify="articleTitle" placeholder="请输入文章标题" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content-div">
+            <div class="layui-form-item">
+                <div id="my-editormd">
+                    <!-- 书写与实时显示的textarea -->
+                    <!--<textarea id="my-editormd-markdown-doc" lay-verify="content" name="my-editormd-markdown-doc" style="display:none;"></textarea>-->
+                    <!-- 用于后端获取md稳当内容，Java中：request.getParameter("my-editormd-html-code")。 -->
+                    <!--<textarea id="my-editormd-html-code" name="my-editormd-html-code" style="display:none;"></textarea>-->
+                </div>
+            </div>
+        </div>
+        <div class="customType-div">
+            <div class="layui-col-md4">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">个人分类</label>
+                    <div class="layui-input-block">
+                        <select name="customTypeId" lay-verify="customTypeId">
+                            <option value="0">请选择</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-clear"></div>
+            </div>
+        </div>
+        <div class="tags-div">
+            <div class="layui-form-item">
+                <label class="layui-form-label">文章标签</label>
+                <div class="tag_wrapper layui-input-block">
+                    <div class="tagList" style="display: inline-block" >
+                        <!--<div class="tag"><span contenteditable="true" style="display: inline-block;padding: 0 12px;">标签1</span><a class="removeTagBtn" href="javascript:void(0)"><i class="layui-icon layui-icon-close"></i></a></div>-->
+                    </div>
+                    <button type="button" class="layui-btn addBtn layui-btn-sm addTagBtn">
+                        <i class="layui-icon">&#xe608;</i> 添加
+                    </button>
+                    <span style="color:#afafaf">&nbsp;&nbsp;最多添加5个标签</span>
+                </div>
+                <input type="hidden" name="articleTags">
+            </div>
+        </div>
+
+        <div class="summary-div">
+            <div class="layui-col-md6">
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">文章摘要</label>
+                    <div class="layui-input-block">
+                        <textarea name="summary" maxlength="200" placeholder="请填写文章摘要，最多支持200字，如不填写会默认抓取正文前200字" class="layui-textarea"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-clear"></div>
+        </div>
+        <div class="footer">
+            <!--保存草稿不需要表单验证，所以去掉lay-submit-->
+            <input style="cursor: default;display: none" type="button" class="noticeMessage layui-btn layui-btn-radius layui-btn-primary">
+            <input type="button" class="draftBtn layui-btn layui-btn-radius layui-btn-primary" value="保存草稿" th:if="!${#strings.contains(#request.getRequestURI(),'update')}">
+            <input lay-filter="pubBtn" type="button" lay-submit class="publishBtn layui-btn layui-btn-radius layui-btn-normal" value="发布文章">
+        </div>
+    </form>
+</div>
+<!--<input type="hidden" class="draftId" value="">-->
+</body>
+</html>

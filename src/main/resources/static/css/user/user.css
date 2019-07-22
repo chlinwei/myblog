@@ -1,0 +1,15 @@
+.main{
+    margin:50px auto;
+    width:900px;
+    padding-bottom: 50px;
+}
+
+.layui-side{
+    top:60px;
+}
+.layui-body{
+    top:60px;
+    z-index: 1;
+}
+
+
