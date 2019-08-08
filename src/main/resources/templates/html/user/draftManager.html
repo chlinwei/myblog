@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head th:replace="html/common/common_head :: common_head(~{::title},~{::link},~{::script})">
+    <title>林威博客</title>
+    <link rel="stylesheet" th:href="@{/css/user/draftManager.css}">
+    <link rel="stylesheet" th:href="@{/css/user/user.css}">
+    <script th:src="@{/js/user/draftManager.js}"></script>
+</head>
+<body>
+
+<div th:replace="html/common/header::header"></div>
+<div th:replace="html/user/user::side"></div>
+
+<script type="text/html" id="opt">
+    <a class="layui-btn layui-btn-sm" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-sm" lay-event="del">删除</a>
+</script>
+<div class="layui-body">
+    <!-- 内容主体区域 -->
+    <div class="main">
+        <div class="main-mid">
+            <table id="table" lay-filter="table" ></table>
+        </div>
+        <div class="main-bottom">
+            <div class="layui-row layui-col-space15">
+                <div>
+                    <button class="layui-btn removeBtn">删除</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

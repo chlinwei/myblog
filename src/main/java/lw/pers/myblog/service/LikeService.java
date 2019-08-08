@@ -25,11 +25,6 @@ public interface LikeService {
 
     public void delLikesByArticleId(int typeId, int type);
 
-    /**
-     * 返回一个用户的所有点赞之和
-     */
-    public int getAllLikesByOwnerId(int ownerId);
-
 }
 
 

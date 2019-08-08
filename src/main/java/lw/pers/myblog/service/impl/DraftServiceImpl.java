@@ -7,12 +7,14 @@ import lw.pers.myblog.dao.CustomTypeDao;
 import lw.pers.myblog.dao.DraftDao;
 import lw.pers.myblog.model.Article;
 import lw.pers.myblog.model.CustomType;
+import lw.pers.myblog.properties.FtpProperties;
 import lw.pers.myblog.service.ArticleService;
 import lw.pers.myblog.service.DraftService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +22,9 @@ import java.util.Map;
 
 @Service
 public class DraftServiceImpl implements DraftService {
+
+    @Autowired
+    FtpProperties ftpProperties;
 
     @Autowired
     private DraftDao draftDao;
@@ -30,11 +35,11 @@ public class DraftServiceImpl implements DraftService {
     @Autowired
     private ArticleService articleService;
     @Override
-    public Map<String,Object> getDraftList(int userId, int pageNum, int pageSize) {
+    public Map<String,Object> getDraftList(int pageNum, int pageSize) {
         Map returnValue = new HashMap<String,Object>();
         List list = new ArrayList<Map<String,Object>>();
         Page page = PageHelper.startPage(pageNum,pageSize);
-        draftDao.getDraftList(userId);
+        draftDao.getDraftList();
         PageInfo<Article> pageInfo = new PageInfo<Article>(page);
         List<Article> drafts = pageInfo.getList();
         returnValue.put("pageNum",pageInfo.getPageNum());
@@ -45,7 +50,9 @@ public class DraftServiceImpl implements DraftService {
             Map map = new HashMap<String,Object>();
             map.put("id",draft.getId());
             map.put("articleTitle",draft.getArticleTitle());
-            map.put("updateTime",draft.getUpdateTime());
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String updateTimeStr = format.format(draft.getUpdateTime());
+            map.put("updateTime",updateTimeStr);
             list.add(map);
         }
         returnValue.put("list",list);
@@ -53,23 +60,17 @@ public class DraftServiceImpl implements DraftService {
     }
 
     @Override
-    public void delOne(int id, int userId) {
-        draftDao.delOne(id,userId);
+    public void delOne(int id) {
+        draftDao.delOne(id);
     }
 
 
     @Override
     @Transactional
-    public void delMany(int[] ids, int userId) {
+    public void delMany(int[] ids) {
         for(int id:ids){
-            delOne(id,userId);
+            delOne(id);
         }
-    }
-
-    @Override
-    public boolean userHasDraft(int draftId, int userId) {
-        Article draft = draftDao.getOne(draftId, userId);
-        return draft!=null;
     }
 
     @Override
@@ -87,15 +88,15 @@ public class DraftServiceImpl implements DraftService {
     public void pubDraft(Article article) {
         //1.先删除草稿
         if(article.getId()!=null) {
-            draftDao.delOne(article.getId(), article.getUserId());
+            draftDao.delOne(article.getId());
         }
         //2.在创建文章
         articleService.saveArticle(article);
     }
 
     @Override
-    public Map<String, Object> getOne(int id, int userId) {
-        Article article = draftDao.getOne(id, userId);
+    public Map<String, Object> getOne(int id) {
+        Article article = draftDao.getOne(id);
         CustomType customType = null;
         if(article.getCustomTypeId()!=null) {
             customType = customTypeService.getCutomTypeById(article.getCustomTypeId());
@@ -104,17 +105,31 @@ public class DraftServiceImpl implements DraftService {
         map.put("id",article.getId());
         map.put("articleType",article.getArticleType());
         map.put("articleTitle",article.getArticleTitle());
-        map.put("articleContent",article.getArticleContent());
+        String content = article.getArticleContent();
+        String pattern  = "(!\\[\\]\\(http://)(.*?/)";
+        content = content.replaceAll(pattern,"$1"+ftpProperties.getHost()+"/");
+        map.put("articleContent",content);
 
         if(customType!=null) {
             map.put("customTypeId", article.getCustomTypeId());
             map.put("customTypeName", customType.getName());
-        }else{
-            map.put("customTypeId", "");
-            map.put("customTypeName", "请选择");
         }
         map.put("summary",article.getSummary());
         map.put("articleTags",article.getArticleTags());
+        return map;
+    }
+
+    @Override
+    public boolean draftIsExist(int draftId) {
+        return draftDao.getOne(draftId)!=null;
+    }
+
+    @Transactional
+    @Override
+    public Map<String, Object> getDraftAndCustomTypes(int id) {
+        Map<String,Object> map = this.getOne(id);
+        List<CustomType> customTypes = customTypeService.getAll();
+        map.put("customTypes",customTypes);
         return map;
     }
 }

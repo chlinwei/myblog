@@ -1,5 +1,6 @@
 package lw.pers.myblog.service;
 
+import lw.pers.myblog.model.Archive;
 import lw.pers.myblog.model.Article;
 
 import java.lang.reflect.InvocationTargetException;
@@ -9,15 +10,15 @@ import java.util.Map;
 public interface ArticleService {
     public void saveArticle(Article article);
 
+    //获取articleRead.html展示的文章
     public Map getArticleById(int id, Integer myId) throws InvocationTargetException, IllegalAccessException;
+
+    public String getArticleTitleByArticleId(int articleId);
 
     public Map getArticleAndCustomTypesByArticleId(int id, Integer myId) throws InvocationTargetException, IllegalAccessException;
 
 
     public boolean articleIsExist(int id);
-
-    //判断某个是否含有某篇文章
-    public boolean userHasArticle(int articleId, int userId);
 
     /**
      * 删除一篇文章
@@ -50,37 +51,29 @@ public interface ArticleService {
      */
     public void updateArticlesCustomType(int userId, int[] articleIds, int customTypeId);
 
-
-    /**
-     * 返回/userBlog/1页面的文章列表
-     */
-//    public Map<String,Object> getArticlesInUserBlog(Integer customTypeId, int userId, int pageNum, int pageSize, Integer myId);
-
-
-    /**
-     * 获取某个用户最新发布的文章
-     */
-    public List<Map<String,Object>> getLatestArticlesInSomeone(int userId, int num);
-
     /**
      * 获取最新发布的文章
      */
     public List<Map<String,Object>> getLatestArticles(int num);
 
-
-    /**
-     * 获取某个用户的文章总数
-     */
-
-    public int countArticle(int userId);
-
     /**
      * 获取所有的文章
      */
-    public Map<String,Object> getIndexArticles(Integer myId, int pageNum, int pageSize);
+    public Map<String,Object> getIndexArticles(Integer customTypeId,int pageNum, int pageSize);
 
     /**
      * 获取所有文章数目
      */
     public int getAllArticleNum();
+
+    /**
+     *归档:返回归档列表
+     */
+    public List<Archive> findArchiveNameAndArticleNum();
+
+
+    /**
+     * 返回归档界面的所有文章
+     */
+    public Map<String,Object> getArchiveArticles(String yearMonth,int pageNum,int pageSize);
 }

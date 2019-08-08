@@ -10,6 +10,11 @@ public interface CommentService {
      */
     public Map getAllComments(int topicType,int topicId, int pageNum, int pageSize);
 
+    /**
+     * 获取最新评论
+     */
+    public Map getLatestComments(int pageNum,int pageSize);
+
 
     /**
      * 删除一个回复

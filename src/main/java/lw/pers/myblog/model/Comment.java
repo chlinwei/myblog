@@ -1,5 +1,7 @@
 package lw.pers.myblog.model;
 
+import java.util.Date;
+
 /**
  * 评论表
  */
@@ -13,7 +15,7 @@ public class Comment {
     private String content;
     private int fromUid;
     private int toUid;
-    private String createTime;
+    private Date createTime;
     private int floor;
 
     public Integer getId() {
@@ -72,11 +74,11 @@ public class Comment {
         this.toUid = toUid;
     }
 
-    public String getCreateTime() {
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(String createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 

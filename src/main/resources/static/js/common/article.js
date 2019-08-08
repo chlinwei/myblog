@@ -228,6 +228,7 @@ layui.define(['laypage','layer','jquery','form'],function(exports){
 
                 //articleContent
                 $("textarea[name=my-editormd-markdown-doc]").val(article.articleContent);
+                initEditor();
 
                 //customType
                 var customTypeResult = {
@@ -238,16 +239,20 @@ layui.define(['laypage','layer','jquery','form'],function(exports){
                 $("select[name=customTypeId]").val(article.customTypeId);
 
                 //articleTags
-                var arr = article.articleTags.split(";");
-                lw_obj.setTags($(".tagList"),arr);
+                if(article.articleTags!==""&&article.articleTags!==null&&article.articleTags!==undefined){
+                    var arr = article.articleTags.split(";");
+                    lw_obj.setTags($(".tagList"),arr);
+                }
 
                 //summary
                 $("textarea[name=summary]").val(article.summary);
 
                 form.render();
 
-            }else if(data.code===-1){
-                $("body").text("要修改的文章不存在");
+            }else if(data.code===403){
+                window.location.replace(contextPath+"/login");
+            }else{
+                layer.alert("获取数据失败！");
             }
         },
         /**
@@ -287,6 +292,47 @@ layui.define(['laypage','layer','jquery','form'],function(exports){
                 }
             })
         },
+        /**
+         * 删除一篇草稿
+         */
+        delDraftById:function (draftId,callback) {
+            $.ajax({
+                type:'post',
+                url:contextPath+"/delDraft",
+                data:{
+                    draftId:draftId
+                },
+                success:function (data) {
+                    if(callback){
+                        callback(data);
+                    }
+                },
+                error:function () {
+                    layer.alert("删除失败");
+                }
+            })
+        },
+        /**
+         * 删除多篇草稿
+         */
+        delDrafts:function (draftIds,callback) {
+            $.ajax({
+                url:contextPath+"/delDrafts",
+                type:'post',
+                data:{
+                    draftIds:draftIds
+                },
+                success:function (data) {
+                    if(callback){
+                        callback(data);
+                    }
+                },
+                error:function () {
+                    layer.alert("删除失败");
+                }
+            })
+        },
+
         /**
          *修改文章列表的个人分类
          */
@@ -352,22 +398,22 @@ layui.define(['laypage','layer','jquery','form'],function(exports){
          * 删除一个个人分类
          */
         delCustomType:function(customTypeId,callback) {
-        $.ajax({
-            type:'post',
-            url:contextPath+"/delCustomType",
-            data:{
-                id:customTypeId
-            },
-            success:function (data) {
-                data.data = customTypeId;
-                if(callback){
-                    callback(data);
+            $.ajax({
+                type:'post',
+                url:contextPath+"/delCustomType",
+                data:{
+                    id:customTypeId
+                },
+                success:function (data) {
+                    data.data = customTypeId;
+                    if(callback){
+                        callback(data);
+                    }
+                },
+                error:function () {
+                    layer.alert("删除个人分类失败！")
                 }
-            },
-            error:function () {
-                layer.alert("删除个人分类失败！")
-            }
-        });
+            });
         }
 
     };

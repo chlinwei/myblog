@@ -36,3 +36,9 @@ label{
     margin:0 auto;
     width:98%;
 }
+
+
+/*注意：layui css样式会覆盖editormd的样式,所以下面的能解决冲突*/
+#my-editormd select{
+    display: inline-block;
+}

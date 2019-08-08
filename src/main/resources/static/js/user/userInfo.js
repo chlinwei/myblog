@@ -60,8 +60,8 @@ layui.use(['jquery','form','laydate','upload'],function () {
             $("input[name=userName]").val(user.userName);
             $("input[name=phone]").val(user.phone);
             $("input[name=email]").val(user.email);
-            $("input[name=gender][value=男]").attr("checked",user.gender === "男" ? true : false);
-            $("input[name=gender][value=女]").attr("checked",user.gender === "女" ? true : false);
+            $("input[name=gender][value=1]").attr("checked",user.gender === 1 ? true : false);
+            $("input[name=gender][value=2]").attr("checked",user.gender === 2 ? true : false);
             $("textarea[name=personalBrief]").val(user.personalBrief);
             $("textarea[name=sign]").val(user.sign);
             form.render('radio');

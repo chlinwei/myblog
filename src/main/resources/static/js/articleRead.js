@@ -4,6 +4,17 @@ layui.use(['jquery','comment','article'],function () {
     var articleMod = layui.article;
 
     /**
+     *绑定文章删除事件
+     */
+        $(".div3").on("click",".removeBtn",function () {
+            layer.confirm("确定删除？",function () {
+                articleMod.delArticleById(articleId,function () {
+                    window.location.replace(contextPath+"/index");
+                })
+            })
+        });
+
+    /**
      * 给文章点赞或取消点赞按钮绑定事件
      */
     $(".articleLikeBtn").click(function () {
@@ -140,7 +151,13 @@ layui.use(['jquery','comment','article'],function () {
     function putInArticle(article) {
         $("#articleTitle").text(article.articleTitle);
         $("#articleTitle").attr("data-id",article.id);
+
+        var yearMonth = article.createTime;
+        yearMonth = yearMonth.substring(0,yearMonth.lastIndexOf("-"));
+        $("#createTime").parent().attr("href",contextPath+"/archives?yearMonth="+yearMonth);
         $("#createTime").text(article.createTime);
+
+
         $("#mdText").text(article.articleContent);
         var content = "";
         content = editormd.markdownToHTML("content", {
@@ -153,13 +170,20 @@ layui.use(['jquery','comment','article'],function () {
         });
 
         var html = "";
-        var tags = article.articleTags.split(";");
-        for(var i=0;i<tags.length;i++){
-            html += '<a><i class="layui-icon layui-icon-note"></i>'+tags[i]+'</a>';
+        if(article.articleTags!==""&& article.articleTags!==null&&article.articleTags!==undefined){
+            var tags = article.articleTags.split(";");
+            for(var i=0;i<tags.length;i++){
+                html += '<a><i class="layui-icon layui-icon-note"></i>'+tags[i]+'</a>';
+            }
         }
         $(".div1-left").append(html);
 
-        $("#customTypeName").text(article.customTypeName);
+        if(article.customTypeId){
+            $("#customTypeName").text(article.customTypeName);
+            $("#customTypeName").attr("href",contextPath+"/customTypes?customTypeId="+article.customTypeId);
+        }else{
+            $("#customTypeName").hide();
+        }
         if(article.lastArticleId){
             $(".last>a").attr("href",contextPath+"/article/"+article.lastArticleId);
             $("#last").text(article.lastArticleTitle);
@@ -173,24 +197,16 @@ layui.use(['jquery','comment','article'],function () {
         if(article.isLiked===1){
             $(".articleLikeBtn").addClass("on");
         }
-        if(userInfo){
-            var updateHref = contextPath + "/update/" + articleId;
-            $(".div3-right").append("<a style='cursor: pointer' class='removeBtn layui-btn layui-btn-danger layui-btn-sm'>删除</a><a href="+updateHref+" class='layui-btn layui-btn-sm editBtn'>修改</a>")
-            $(".div3").on("click",".removeBtn",function () {
-                layer.confirm("确定删除？",function () {
-                    articleMod.delArticleById(articleId,function () {
-                        window.location.replace(contextPath+"/index");
-                    })
-                })
-            });
-        }
 
-        //authorId
+        /**
+         * 作者id
+         */
         $(".authorId").val(article.authorId);
 
         var articleType = "未知";
         if(article.articleType===1){
             articleType = "原创";
+            $("#articleType").addClass("layui-bg-green");
         }else if(article.articleType===2){
             articleType = "转载";
         }
@@ -215,6 +231,7 @@ layui.use(['jquery','comment','article'],function () {
                 }
             },
             error:function () {
+                layer.alert("获取文章失败");
             }
         });
     }

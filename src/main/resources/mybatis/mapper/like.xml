@@ -22,7 +22,5 @@
     <delete id="delLikesByArticleId">
         DELETE FROM `like` WHERE typeId=#{typeId} AND type=#{type}
     </delete>
-    <select id="getAllLikesByOwnerId" resultType="java.lang.Integer">
-        select count(*) from `like` WHERE ownerId=#{ownerId};
-    </select>
+
 </mapper>

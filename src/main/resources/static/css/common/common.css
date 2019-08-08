@@ -16,3 +16,24 @@ textarea{
 .clear{
     clear:both;
 }
+
+/*文字过多显示...*/
+.ellipsis{
+    white-space: nowrap; /* 不换行 */
+    overflow: hidden; /* 超出部分不显示 */
+    text-overflow: ellipsis; /* 超出部分显示为... */
+}
+
+/**
+个人分类框框
+ */
+.customType{
+    background-color: #FFF!important;
+    color: #d01919!important;
+    border-color: #d01919!important;
+    border: 1px solid rgba(34,36,38,.15);
+    padding:5px;
+    font-size:13px;
+}
+
+

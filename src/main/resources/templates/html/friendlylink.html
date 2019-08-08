@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head th:replace="html/common/common_head :: common_head(~{::title},~{::link},~{::script})">
+    <title>设置</title>
+    <link rel="stylesheet" th:href="@{/css/friendlylink.css}">
+    <script th:src="@{/js/friendlylink.js}"></script>
+</head>
+<body>
+<div th:replace="html/common/header::header"></div>
+<div class="main">
+    <div class="content">
+        <div class="commonLinks links">
+            <div class="title-div">
+                <span class="title">#常用链接</span>
+            </div>
+            <div class="linkList" >
+                <div class="link">
+                    <a target="_blank" href="https://www.iconfont.cn/">阿里巴巴图标库</a>
+                </div>
+                <div class="link">
+                    <a target="_blank" href="https://account.aliyun.com/login/login.htm">阿里云登录</a>
+                </div>
+                <div class="link">
+                    <a target="_blank" href="https://www.pexels.com/">高质量图片库</a>
+                </div>
+                <div class="link">
+                    <a target="_blank" href="https://www.icourse163.org/">中国大学MOOC</a>
+                </div>
+                <div class="link">
+                    <a target="_blank" href="//www.cnblogs.com/f-ck-need-u/p/7048359.html">shell脚本</a>
+                </div>
+                <div class="link">
+                    <a target="_blank" href="https://www.bilibili.com/">哔哩哔哩</a>
+                </div>
+                <div class="link">
+                    <a target="_blank" href="https://leetcode-cn.com/">leetcode刷题</a>
+                </div>
+
+                <div class="link">
+                    <a target="_blank" href="https://blog.51cto.com/">51cto博客</a>
+                </div>
+                <div class="link">
+                    <a target="_blank" href="https://www.zhihu.com/explore">知乎</a>
+                </div>
+
+            </div>
+        </div>
+        <div class="friendlylinks links">
+            <div class="title-div">
+                <span class="title">#友情链接</span>
+            </div>
+            <div class="linkList">
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

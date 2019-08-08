@@ -4,15 +4,15 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="lw.pers.myblog.dao.DraftDao">
     <select id="getDraftList" resultType="lw.pers.myblog.model.Article">
-        SELECT * from draft WHERE userId=#{userId} ORDER BY id desc
+        SELECT * from draft ORDER BY id desc
     </select>
 
     <delete id="delOne">
-        DELETE from draft WHERE userId=#{userId} and id=#{id}
+        DELETE from draft WHERE id=#{id}
     </delete>
 
     <select id="getOne" resultType="lw.pers.myblog.model.Article">
-        SELECT * from draft WHERE id=#{id} and userId=#{userId}
+        SELECT * from draft WHERE id=#{id}
     </select>
     <insert id="saveDraft" parameterType="lw.pers.myblog.model.Article" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO draft(articleTitle, articleContent, articleTags, articleType, summary, customTypeId, userId)
@@ -24,5 +24,4 @@
             articleContent=#{article.articleContent},articleTags=#{article.articleTags},
             summary=#{article.summary},customTypeId=#{article.customTypeId} WHERE id=#{article.id} and userId=#{article.userId}
     </update>
-    
 </mapper>

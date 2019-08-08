@@ -23,19 +23,4 @@ INSERT `like`(typeId,ownerId, type, userId) VALUES (2,1,1,2);
 
 
 
-/**
-用户1给第1篇文章的第1条评论点赞
- */
 
-INSERT `like`(typeId,ownerId, type, userId) VALUES (1,1,2,1);
-
-/**
-用户2给第1篇文章的第二条评论点赞
- */
-INSERT `like`(typeId,ownerId, type, userId) VALUES (2,2,2,2);
-
-
-/*
-用户1给id为11的回复点赞
- */
-INSERT `like`(typeId,ownerId, type, userId) VALUES (11,2,2,1);

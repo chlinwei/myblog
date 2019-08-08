@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head th:replace="html/common/common_head :: common_head(~{::title},~{::link},~{::script})">
+    <title>设置</title>
+    <link rel="stylesheet" th:href="@{/css/archives.css}">
+    <script th:src="@{/js/archives.js}"></script>
+</head>
+<body>
+<div th:replace="html/common/header::header"></div>
+<div class="main">
+    <div class="layui-row layui-col-space30">
+        <div class="layui-col-md3">
+            <div class="title">
+                <a th:href="@{/archives}">
+                    <h3 style="font-size: 20px">Archives</h3>
+                </a>
+            </div>
+            <div class="archiveList"></div>
+        </div>
+        <div class="layui-col-md9">
+            <ul class="layui-timeline articleList">
+                <li class="layui-timeline-item">
+                    <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                    <div class="layui-timeline-content layui-text">
+                        <h3 class="layui-timeline-title">本站博客总共&nbsp;<span class="articleNum"></span>&nbsp;篇，加油！</h3>
+                    </div>
+                </li>
+                <li class="layui-timeline-item">
+                    <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                    <div class="layui-timeline-content layui-text">
+                        <h3 class="layui-timeline-title now">2019年</h3>
+                    </div>
+                </li>
+            </ul>
+            <div id="pagination" style="text-align: center"></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

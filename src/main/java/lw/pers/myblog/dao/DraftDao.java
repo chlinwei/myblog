@@ -4,6 +4,7 @@ import lw.pers.myblog.model.Article;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 草稿表和文章表公用一个model
@@ -12,17 +13,17 @@ public interface DraftDao {
     /**
      * 获取草稿表列表
      */
-    public List<Article> getDraftList(@Param("userId") int userId);
+    public List<Article> getDraftList();
 
     /**
      * 删除一篇草稿
      */
-    public void delOne(@Param("id") int id, @Param("userId") int userId);
+    public void delOne(@Param("id") int id);
 
     /**
-     * 某个用户获取一篇草稿
+     * 获取一篇草稿
      */
-    public Article getOne(@Param("id") int id, @Param("userId") int userId);
+    public Article getOne(@Param("id") int id);
 
     /**
      * 保存一篇草稿

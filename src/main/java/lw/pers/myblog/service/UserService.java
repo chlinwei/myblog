@@ -60,11 +60,6 @@ public interface UserService {
 
 
     /**
-     * 在/userBlog页面获取用户基本信息
-     */
-    public Map<String,Object> getUserInfoInUserBlog(int userId);
-
-    /**
      * 修改用户最近登录时间
      */
     public void updateLastLoginTime(int userId);

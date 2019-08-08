@@ -77,8 +77,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/register").permitAll()
                 .antMatchers("/doRegister").permitAll()
                 .antMatchers("/login").permitAll()
-                .antMatchers("/index").permitAll()
-                .antMatchers("/user/**","/editor","/draft/**","/update/**","/pubSuccess/**").hasRole("USER");
+                .antMatchers("/index").permitAll();
+//                .antMatchers("/editor","/draft/**","/update/**","/pubSuccess/**").hasRole("USER");
         http.rememberMe().tokenValiditySeconds(3600*24*10).authenticationSuccessHandler(mySuccessHandler());
 
 

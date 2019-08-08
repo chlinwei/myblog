@@ -4,6 +4,7 @@ import lw.pers.myblog.model.CustomType;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface CustomTypeDao {
     /**
@@ -32,6 +33,8 @@ public interface CustomTypeDao {
      */
     public CustomType getCutomTypeById(int id);
 
-
-
+    /**
+     * 返回分类列表及其每个分类所包含的文章数目
+     */
+    public List<Object> getHasNumList();
 }

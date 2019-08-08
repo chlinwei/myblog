@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 
-<head th:replace="/html/common/common_head :: common_head(~{::title},~{::link},~{::script})">
+<head th:replace="html/common/common_head :: common_head(~{::title},~{::link},~{::script})">
     <title>设置</title>
     <link rel="stylesheet" th:href="@{/css/user/articleManager.css}">
     <script th:src="@{/js/user/articleManager.js}"></script>
 </head>
 <body>
-<div th:replace="/html/common/header::header"></div>
-<div th:replace="/html/user/user::side"></div>
+<div th:replace="html/common/header::header"></div>
+<div th:replace="html/user/user::side"></div>
 
 <script type="text/html" id="opt">
     <a class="layui-btn layui-btn-sm" lay-event="edit">编辑</a>

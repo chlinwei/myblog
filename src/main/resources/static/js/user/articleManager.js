@@ -25,13 +25,13 @@ layui.use(['table','article','form','lwUtil','jquery'],function () {
         url:requestUrl,
         page:true,
         cols:[[
-            {type: 'checkbox', fixed: 'left',field:'id'},
-            {field: 'articleTitle', title: '标题',  sort: false, fixed: 'left',templet: function (d) {
+            {type: 'checkbox', fixed: 'left',field:'id',width:'10%'},
+            {field: 'articleTitle', title: '标题',  sort: false, fixed: 'left',width:'25%',templet: function (d) {
                 var articleTitle = d.articleTitle;
                 var href = contextPath + '/article/' + d.id;
                 return "<a class='layui-table-link' href="+href+">"+articleTitle+"</a>";
             }},
-            {field: 'articleType', title: '类型',  sort: false, fixed: 'left',templet:function (d) {
+            {field: 'articleType', title: '类型',  sort: false,width:'10%', fixed: 'left',templet:function (d) {
                 var result = '未知';
                 if(d.articleType===1){
                     result = '原创';
@@ -40,14 +40,14 @@ layui.use(['table','article','form','lwUtil','jquery'],function () {
                 }
                 return result;
             }},
-            {field: 'customTypeName', title: '分类',  sort: false, fixed: 'left',templet:function (d) {
+            {field: 'customTypeName', title: '分类',  sort: false, fixed: 'left',width:'20%',templet:function (d) {
                 if(d.customTypeId){
                     return d.customTypeName;
                 }else{
                     return "<span style='color:#F581B1;'>未分类</span>";
                 }
             }},
-            {field: 'createTime', title: '发布日期',  sort: true, fixed: 'left'},
+            {field: 'createTime', title: '发布日期',  sort: true, fixed: 'left',width:'20%'},
             {fixed: 'right', title:'操作', toolbar: '#opt'}
         ]],
         method:'get',
@@ -97,7 +97,6 @@ layui.use(['table','article','form','lwUtil','jquery'],function () {
             ids.push(list[i].id);
         }
         return ids;
-
     }
 
     form.on('select(customTypeId)', function(data){

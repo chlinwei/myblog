@@ -1,6 +1,8 @@
 .main{
     margin:150px auto;
+    position: relative;
 }
+
 .welcome{
     text-align: center;
     line-height: 40px;
@@ -16,3 +18,4 @@
     height: 35px;
     margin:0 auto;
 }
+

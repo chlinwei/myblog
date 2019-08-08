@@ -17,8 +17,7 @@ public class User {
     @Length(min = 6,max=20,message = "密码长度不能小于6字符,不能大于20个字符")
     private String passwd;
 
-    @Pattern(regexp = "^[男女]$",message = "性别格式错误:性别只能为男或者女")
-    private String gender;
+    private int gender;
 
     //头像的uri
     private String avatarImgUri;
@@ -76,11 +75,11 @@ public class User {
         this.passwd = passwd;
     }
 
-    public String getGender() {
+    public int getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(int gender) {
         this.gender = gender;
     }
 

@@ -7,9 +7,11 @@ import lw.pers.myblog.constant.CommentType;
 import lw.pers.myblog.constant.LikeType;
 import lw.pers.myblog.dao.*;
 import lw.pers.myblog.exception.MyException;
+import lw.pers.myblog.model.Archive;
 import lw.pers.myblog.model.Article;
 import lw.pers.myblog.model.CustomType;
 import lw.pers.myblog.model.User;
+import lw.pers.myblog.properties.FtpProperties;
 import lw.pers.myblog.service.ArticleService;
 import lw.pers.myblog.service.CollectService;
 import lw.pers.myblog.service.CommentService;
@@ -23,13 +25,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class ArticleServiceImpl implements ArticleService {
+    @Autowired
+    FtpProperties ftpProperties;
     @Autowired
     private ArticleDao articleDao;
 
@@ -70,7 +71,11 @@ public class ArticleServiceImpl implements ArticleService {
         Article article = articleDao.getArticleById(id);
         map.put("articleTitle",article.getArticleTitle());
         map.put("id",article.getId());
-        map.put("articleContent",article.getArticleContent());
+        //内容
+        String content = article.getArticleContent();
+        String pattern  = "(!\\[\\]\\(http://)(.*?/)";
+        content = content.replaceAll(pattern,"$1"+ftpProperties.getHost()+"/");
+        map.put("articleContent",content);
         map.put("articleTags",article.getArticleTags());
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String createTime = format.format(article.getCreateTime());
@@ -151,11 +156,11 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     @Transactional
     public void delArticle(int id, int userId) {
-        //首先判断这个用户是否有这篇文章
+        //判单这篇文章是否存在
         Article article = articleDao.getArticleById(id);
         if(article.getUserId()==userId){
             //1.先删除article表的数据
-            articleDao.delArticleById(id,userId);
+            articleDao.delArticleById(id);
             //2.再删除article_collect表的数据
             collectDao.delArticleByArticleId(id);
             //3.在删除like表里的相关点赞
@@ -190,7 +195,11 @@ public class ArticleServiceImpl implements ArticleService {
         map.put("id",article.getId());
         map.put("articleType",article.getArticleType());
         map.put("articleTitle",article.getArticleTitle());
-        map.put("articleContent",article.getArticleContent());
+        //内容
+        String content = article.getArticleContent();
+        String pattern  = "(!\\[\\]\\(http://)(.*?/)";
+        content = content.replaceAll(pattern,"$1"+ftpProperties.getHost()+"/");
+        map.put("articleContent",content);
 
         if(customType!=null) {
             map.put("customTypeId", article.getCustomTypeId());
@@ -215,7 +224,7 @@ public class ArticleServiceImpl implements ArticleService {
     public Map getArticlesInManager(int pageNum,int pageSize,Integer customTypeId,String articleType){
         Map<String,Object> returnValue = new HashMap<>();
         Page page = PageHelper.startPage(pageNum,pageSize);
-        articleDao.getArticlesByUserId(customTypeId,articleType);
+        articleDao.getArticlesInManager(customTypeId,articleType);
         PageInfo<Article> pageInfo = new PageInfo<Article>(page);
         List<Article> articles = pageInfo.getList();
         //分页数据
@@ -261,90 +270,6 @@ public class ArticleServiceImpl implements ArticleService {
         }
     }
 
-//    @Override
-//    @Transactional
-//    public Map<String,Object> getArticlesInUserBlog(Integer customTypeId, int userId,int pageNum,int pageSize,Integer myId) {
-//        Map<String,Object> returnValue = new HashMap<>();
-//        List list = new ArrayList<Map<String,Object>>();
-//        Page page = PageHelper.startPage(pageNum,pageSize);
-//        articleDao.getArticlesByUserId(customTypeId, null);
-//        PageInfo<Article> pageInfo = new PageInfo<Article>(page);
-//        List<Article> articles = pageInfo.getList();
-//        returnValue.put("pageNum",pageInfo.getPageNum());
-//        returnValue.put("pageSize",pageInfo.getPageSize());
-//        returnValue.put("pages",pageInfo.getPages());
-//        returnValue.put("total",pageInfo.getTotal());
-//        //用户信息
-//        User user = userDao.getUserById(userId);
-//        returnValue.put("authorId",user.getId());
-//        returnValue.put("author",user.getUserName());
-//        returnValue.put("avatarUrl",AvatarlUtil.getUrl(ftpHost,user.getAvatarImgUri()));
-//
-//        for(Article article : articles){
-//            HashMap<String, Object> map = new HashMap<>();
-//            //文章
-//            map.put("articleId",article.getId());
-//            map.put("articleTitle",article.getArticleTitle());
-//            map.put("createTime",article.getCreateTime());
-//            map.put("articleType",article.getArticleType());
-//
-//
-//            //文章分类
-//            Integer customTypeId1 = article.getCustomTypeId();
-//            CustomType customType = customTypeDao.getCutomTypeById(customTypeId1);
-//            map.put("customTypeId",customTypeId1);
-//            map.put("customTypeName",customType.getName());
-//
-//            //文章摘要
-//            if(article.getSummary()==null){
-//                map.put("articleBrief", SummaryUtil.toSummary(article.getArticleContent()));
-//            }else{
-//                map.put("articleBrief", article.getSummary());
-//            }
-//
-//            //评论次数
-//            int commentNum = commentDao.getSumByArticleId(article.getId());
-//            map.put("commentNum",commentNum);
-//
-//            //收藏次数
-//            int collectNum  = collectDao.getSumByArticleId(article.getId());
-//            map.put("collectNum",collectNum);
-//
-//            //点赞次数
-//            int likes = likeService.getLikes(article.getId(), LikeType.article);
-//            map.put("likes",likes);
-//            list.add(map);
-//
-//            //是否点赞
-//            if(myId!=null){
-//                //登录了
-//                if(likeService.isLiked(article.getId(),LikeType.article,myId)) {
-//                    map.put("isLiked", 1);
-//                }else{
-//                    map.put("isLiked", 0);
-//                }
-//            }else{
-//                map.put("isLiked", 0);
-//            }
-//        }
-//        returnValue.put("list",list);
-//        return returnValue;
-//    }
-
-
-    @Override
-    public List<Map<String,Object>> getLatestArticlesInSomeone(int userId, int num) {
-        List<Article> articles = articleDao.getlatestArticlesInSomeone(userId, num);
-        List<Map<String,Object>> list = new ArrayList<>();
-        for(Article article:articles){
-            Map map = new HashMap<String,Object>();
-            map.put("articleId",article.getId());
-            map.put("articleTitle",article.getArticleTitle());
-            list.add(map);
-        }
-        return list;
-    }
-
 
     @Override
     public List<Map<String, Object>> getLatestArticles(int num) {
@@ -359,19 +284,14 @@ public class ArticleServiceImpl implements ArticleService {
         return list;
     }
 
-    @Override
-    public int countArticle(int userId) {
-        return articleDao.countArticles(userId);
-    }
-
 //    @Cacheable(cacheNames = "article",key =  "'pageNum='+#pageNum")
     @Override
     @Transactional
-    public Map<String, Object> getIndexArticles(Integer myId,int pageNum,int pageSize) {
+    public Map<String, Object> getIndexArticles(Integer customTypeId,int pageNum,int pageSize) {
         Map returnValue = new HashMap<String,Object>();
         List<Map<String,Object>> list = new ArrayList<>();
         Page page = PageHelper.startPage(pageNum,pageSize);
-        articleDao.getAllArticle();
+        articleDao.getAllArticle(customTypeId);
         PageInfo<Article> pageInfo = new PageInfo<Article>(page);
         List<Article> articles = pageInfo.getList();
         returnValue.put("pageNum",pageInfo.getPageNum());
@@ -394,11 +314,12 @@ public class ArticleServiceImpl implements ArticleService {
             //文章分类
             Integer customTypeId1 = article.getCustomTypeId();
             CustomType customType = customTypeDao.getCutomTypeById(customTypeId1);
-            map.put("customTypeId",customTypeId1);
-            map.put("customTypeName",customType.getName());
-
+            if(customType!=null) {
+                map.put("customTypeId", customTypeId1);
+                map.put("customTypeName", customType.getName());
+            }
             //文章摘要
-            if(article.getSummary()==null){
+            if(article.getSummary()==null||"".equals(article.getSummary().trim())){
                 map.put("articleBrief", SummaryUtil.toSummary(article.getArticleContent()));
             }else{
                 map.put("articleBrief", article.getSummary());
@@ -417,9 +338,41 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public boolean userHasArticle(int articleId, int userId) {
-        Article article = articleDao.getArticleByUserIdAndId(articleId,userId);
-        return article!=null;
+    public String getArticleTitleByArticleId(int articleId) {
+        return articleDao.getArticleTitleByArticleId(articleId);
+    }
+
+    @Override
+    public List<Archive> findArchiveNameAndArticleNum() {
+        List<Archive> list = articleDao.findArchiveNameAndArticleNum();
+        return list;
+    }
+
+    @Override
+    public Map<String, Object> getArchiveArticles(String yearMonth,int pageNum, int pageSize) {
+        Map<String,Object> returnValue = new HashMap<>();
+        Page page = PageHelper.startPage(pageNum,pageSize);
+        articleDao.getArticlesByYearMonth(yearMonth);
+        PageInfo<Article> pageInfo = new PageInfo<Article>(page);
+        List<Article> articles = pageInfo.getList();
+        //分页数据
+        returnValue.put("pageNum",pageInfo.getPageNum());
+        returnValue.put("pageSize",pageInfo.getPageSize());
+        returnValue.put("pages",pageInfo.getPages());
+        returnValue.put("total",pageInfo.getTotal());
+        List<Map> list = new ArrayList<>();
+        for(Article article:articles){
+            Map<String, Object> map = new HashMap<>();
+            map.put("articleTitle",article.getArticleTitle());
+            map.put("id",article.getId());
+            map.put("articleType",article.getArticleType());
+            Date createTime = article.getCreateTime();
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            map.put("createTime",format.format(createTime));
+            list.add(map);
+        }
+        returnValue.put("list",list);
+        return returnValue;
     }
 }
 

@@ -8,7 +8,7 @@
     </select>
 
     <select id="getReplies" resultType="lw.pers.myblog.model.Comment">
-        select * from comment WHERE pId=#{pId};
+        select * from comment WHERE pId=#{pId} ORDER BY id desc
     </select>
 
     <delete id="delOne">
@@ -46,5 +46,9 @@
 
     <select id="countComment" resultType="java.lang.Integer">
         SELECT count(*) from comment
+    </select>
+
+    <select id="getLatestComments" resultType="lw.pers.myblog.model.Comment">
+        SELECT * from comment ORDER BY id desc
     </select>
 </mapper>

@@ -10,12 +10,6 @@ public interface LikeDao {
     public int getLikes(@Param("typeId") int typeId, @Param("type") int type);
 
     /**
-     * 获取某个用户的所有文章和评论的点赞次数之和
-     */
-    public int getAllLikesByOwnerId(@Param("ownerId") int ownerId);
-
-
-    /**
      * 查看某个用户是否点赞过
      */
     public Like getLike(@Param("typeId") int typeId, @Param("type") int type, @Param("userId") int userId);

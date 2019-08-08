@@ -31,14 +31,10 @@ public class IndexController {
     public ResponseMessage getIndexArticles(
             @RequestParam(value = "pageNum",required = false,defaultValue = "1")int pageNum,
             @RequestParam(value = "pageSize",required = false,defaultValue = "10")int pageSize,
-            HttpSession session
+            @RequestParam(value = "customTypeId",required = false)Integer customTypeId
     ){
-        SessionUserInfo userInfo = (SessionUserInfo) session.getAttribute("userInfo");
-        Integer myId = null;
-        if(userInfo!=null){
-            myId = userInfo.getId();
-        }
-        Map<String, Object> allArticle = articleService.getIndexArticles(myId, pageNum, pageSize);
+        System.out.println("customTypeId:"+customTypeId);
+        Map<String, Object> allArticle = articleService.getIndexArticles(customTypeId,pageNum, pageSize);
         return ResponseMessageUtil.success(allArticle);
     }
 
@@ -69,16 +65,14 @@ public class IndexController {
     /**
      * 获取最新评论
      */
-    @GetMapping("/getLastComment")
+    @GetMapping("/getLatestComments")
     @ResponseBody
-    public ResponseMessage getLastComment(
+    public ResponseMessage getLastComments(
             @RequestParam(value = "pageNum",required = false,defaultValue = "1")int pageNum,
             @RequestParam(value = "pageSize",required = false,defaultValue = "5")int pageSize
             ){
-
-
-        return null;
-
+        Map latestComments = commentService.getLatestComments(pageNum, pageSize);
+        return ResponseMessageUtil.success(latestComments);
     }
 }
 

@@ -41,5 +41,10 @@ public class CustomTypeServiceImpl implements CustomTypeService{
             }
         }
     }
+
+    @Override
+    public List<Object> getHasNumList() {
+        return customTypeDao.getHasNumList();
+    }
 }
 

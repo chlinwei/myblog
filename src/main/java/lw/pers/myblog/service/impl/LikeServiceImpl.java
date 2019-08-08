@@ -45,8 +45,4 @@ public class LikeServiceImpl implements LikeService{
         likeDao.delLikesByArticleId(typeId,type);
     }
 
-    @Override
-    public int getAllLikesByOwnerId(int ownerId) {
-        return likeDao.getAllLikesByOwnerId(ownerId);
-    }
 }

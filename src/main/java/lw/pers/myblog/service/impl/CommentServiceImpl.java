@@ -3,11 +3,13 @@ package lw.pers.myblog.service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import lw.pers.myblog.constant.CommentType;
 import lw.pers.myblog.constant.LikeType;
 import lw.pers.myblog.dao.CommentDao;
 import lw.pers.myblog.model.Comment;
 import lw.pers.myblog.model.SessionUserInfo;
 import lw.pers.myblog.model.User;
+import lw.pers.myblog.service.ArticleService;
 import lw.pers.myblog.service.CommentService;
 import lw.pers.myblog.service.LikeService;
 import lw.pers.myblog.service.UserService;
@@ -16,8 +18,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +41,10 @@ public class CommentServiceImpl implements CommentService{
 
     @Autowired
     private HttpSession session;
+
+    @Autowired
+    private ArticleService articleService;
+
 
     @Value("${ftp.host}")
     private String ftpHost;
@@ -64,7 +74,10 @@ public class CommentServiceImpl implements CommentService{
         for(Comment comment : comments){
             Map<String,Object> map = new HashMap<>();
             map.put("id",comment.getId());
-            map.put("createTime",comment.getCreateTime());
+
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            String strCreateTime = format.format(comment.getCreateTime());
+            map.put("createTime",strCreateTime);
             map.put("content",comment.getContent());
             map.put("floor",comment.getFloor());
             //点赞数目
@@ -99,7 +112,7 @@ public class CommentServiceImpl implements CommentService{
                 Map<String, Object> replyMap = new HashMap<>();
                 replyMap.put("id",comment1.getId());
                 replyMap.put("content",comment1.getContent());
-                replyMap.put("createTime",comment1.getCreateTime());
+                replyMap.put("createTime",format.format(comment1.getCreateTime()));
 
                 //点赞数目
                 int likes1 = likeService.getLikes(comment1.getId(), LikeType.comment);
@@ -206,6 +219,56 @@ public class CommentServiceImpl implements CommentService{
     @Override
     public int countComment() {
         return commentDao.countComment();
+    }
+
+    @Override
+    public Map getLatestComments(int pageNum, int pageSize) {
+        Page page = PageHelper.startPage(pageNum,pageSize);
+        //这里不用接受返回值,返回值会自动跑到pageInfo里
+        commentDao.getLatestComments();
+        PageInfo<Comment> pageInfo = new PageInfo<Comment>(page);
+        List<Comment> comments = pageInfo.getList();
+        Map<String,Object> returnValue =  new HashMap<>();
+        List<Map> list = new ArrayList<>();
+        returnValue.put("pageNum",pageInfo.getPageNum());
+        returnValue.put("pageSize",pageInfo.getPageSize());
+        returnValue.put("pages",pageInfo.getPages());
+        returnValue.put("total",pageInfo.getTotal());
+
+        for(Comment comment: comments){
+            HashMap<String, Object> map = new HashMap<>();
+            //回复者
+            User fromUser = userService.findUserById(comment.getFromUid());
+            map.put("fromUserName",fromUser.getUserName());
+            map.put("fromUid",comment.getFromUid());
+
+            //被回复者
+            if(comment.getToUid()!=0){
+                //表示是@别人
+                map.put("toUid",comment.getToUid());
+                User user1 = userService.findUserById(comment.getToUid());
+                map.put("toUserName",user1.getUserName());
+            }
+            //获取文章标题
+            if(comment.getTopicType()== CommentType.article){
+                map.put("title",articleService.getArticleTitleByArticleId(comment.getTopicId()));
+                ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
+                HttpServletRequest request = servletRequestAttributes.getRequest();
+                map.put("url",request.getContextPath()+"/article/"+comment.getTopicId());
+            }
+            //评论内容
+            map.put("content",comment.getContent());
+            //评论id
+            map.put("id",comment.getId());
+
+            //评论时间
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            String strCreateTime = format.format(comment.getCreateTime());
+            map.put("createTime",strCreateTime);
+            list.add(map);
+        }
+        returnValue.put("list",list);
+        return returnValue;
     }
 }
 

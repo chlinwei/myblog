@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 
-<head th:replace="/html/common/common_head :: common_head(~{::title},~{::link},~{::script})">
+<head th:replace="html/common/common_head :: common_head(~{::title},~{::link},~{::script})">
     <title>林威博客</title>
     <link rel="stylesheet" th:href="@{/css/user/userInfo.css}">
     <link rel="stylesheet" th:href="@{/css/user/user.css}">
@@ -9,8 +9,8 @@
 </head>
 <body>
 
-<div th:replace="/html/common/header::header"></div>
-<div th:replace="/html/user/user::side"></div>
+<div th:replace="html/common/header::header"></div>
+<div th:replace="html/user/user::side"></div>
 
 <div class="layui-body">
     <!-- 内容主体区域 -->
@@ -64,8 +64,8 @@
                     <div class="layui-col-md7">
                         <label class="layui-form-label">性别</label>
                         <div class="layui-input-block">
-                            <input type="radio" name="gender" value="男" title="男" checked="">
-                            <input type="radio" name="gender" value="女" title="女">
+                            <input type="radio" name="gender" value="1" title="男" checked="">
+                            <input type="radio" name="gender" value="2" title="女">
                         </div>
                     </div>
                 </div>

@@ -20,10 +20,9 @@ public class SuccessController {
      * 此页面为发布文章成功后跳转到的页面
      */
     @GetMapping("/pubSuccess/{articleId}")
-    public String getPubSuccessPage(@PathVariable("articleId") int articleId, @AuthenticationPrincipal Principal principal, HttpSession session){
-        //1.判断用户是否含有该文章
-        SessionUserInfo userInfo = (SessionUserInfo) session.getAttribute("userInfo");
-        boolean b = articleService.userHasArticle(articleId, userInfo.getId());
+    public String getPubSuccessPage(@PathVariable("articleId") int articleId, @AuthenticationPrincipal Principal principal){
+        //1.判断是否存在该文章
+        boolean b = articleService.articleIsExist(articleId);
         if(!b){
             return "redirect:/error/404";
         }

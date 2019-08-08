@@ -8,6 +8,7 @@ import lw.pers.myblog.service.ArticleService;
 import lw.pers.myblog.service.impl.FtpService;
 import lw.pers.myblog.util.LoginCheckUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.security.Principal;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -38,6 +40,10 @@ public class ArticleController {
      */
     @GetMapping("/article/{articleId}")
     public String getArticlePage(@PathVariable("articleId") int articleId){
+        if(!articleService.articleIsExist(articleId)){
+            //不存在
+            return "html/error/articleNotFound";
+        }
         return "html/articleRead";
     }
 
@@ -46,11 +52,17 @@ public class ArticleController {
      *返回修改文章界面
      */
     @GetMapping("/update/{articleId}")
-    public String updateArticlePage(@PathVariable("articleId") int articleId,HttpServletRequest request,HttpSession session){
+    public String updateArticlePage(@PathVariable("articleId") int articleId,HttpServletRequest request,@AuthenticationPrincipal Principal principal,HttpSession session) throws InvocationTargetException, IllegalAccessException {
+        LoginCheckUtil.check(principal);
         //判断用户是否含有这篇文章
-        SessionUserInfo userInfo = (SessionUserInfo) session.getAttribute("userInfo");
-        boolean b = articleService.userHasArticle(articleId,userInfo.getId());
-        request.setAttribute("flag",b);
+        boolean b = articleService.articleIsExist(articleId);
+        if(!b){
+            //不存在
+            return "html/error/articleNotFound";
+        }
+//        SessionUserInfo userInfo = (SessionUserInfo) session.getAttribute("userInfo");
+//        Map<String,Object> map = articleService.getArticleById(articleId,userInfo.getId());
+//        request.setAttribute("article",map);
         return "html/articleUpdate";
     }
 
@@ -65,20 +77,15 @@ public class ArticleController {
         if(userInfo!=null){
             myId = userInfo.getId();
         }
-        if(articleService.articleIsExist(id)){
-            //存在
-            Map article = articleService.getArticleById(id,myId);
-            return ResponseMessageUtil.success(article);
-        }else{
-            //不存在
-            return ResponseMessageUtil.error("文章不存在");
-        }
+        Map article = articleService.getArticleById(id,myId);
+        return ResponseMessageUtil.success(article);
     }
 
     /**
      * 返回文章及其个人分类列表
      */
     @GetMapping("/getArticleAndCustomTypes")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @ResponseBody
     public ResponseMessage getArticleAndCustomTypes(int id,HttpSession session) throws InvocationTargetException, IllegalAccessException {
         Integer myId = null;
@@ -86,14 +93,9 @@ public class ArticleController {
         if(userInfo!=null){
             myId = userInfo.getId();
         }
-        if(articleService.articleIsExist(id)){
-            //存在
-            Map article = articleService.getArticleAndCustomTypesByArticleId(id,myId);
-            return ResponseMessageUtil.success(article);
-        }else{
-            //不存在
-            return ResponseMessageUtil.error("文章不存在");
-        }
+        //存在
+        Map article = articleService.getArticleAndCustomTypesByArticleId(id,myId);
+        return ResponseMessageUtil.success(article);
     }
 
     /**
@@ -104,13 +106,8 @@ public class ArticleController {
     public ResponseMessage getUpdatePageArticle(@RequestParam("articleId") int articleId,HttpSession session,@AuthenticationPrincipal Principal principal){
         LoginCheckUtil.check(principal);
         SessionUserInfo userInfo = (SessionUserInfo) session.getAttribute("userInfo");
-        if(articleService.userHasArticle(articleId,userInfo.getId())){
-            Map<String,Object> map = articleService.getUpdatePageArticle(articleId, userInfo.getId());
-            return ResponseMessageUtil.success(map);
-        }else{
-            //不存在
-            return ResponseMessageUtil.error("文章不存在");
-        }
+        Map<String,Object> map = articleService.getUpdatePageArticle(articleId, userInfo.getId());
+        return ResponseMessageUtil.success(map);
     }
 
     /**
@@ -118,6 +115,7 @@ public class ArticleController {
      * 注意:这里editormd期望你返回给前端的的json是 {success:0|1,message,url} 0:表示上传失败,1表示成功
      */
     @PostMapping("/uploadArticleImage")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @ResponseBody
     public Map<String,Object> uploadArticleImage(HttpSession session, @RequestParam("editormd-image-file") MultipartFile file, @AuthenticationPrincipal Principal principal, HttpServletResponse response) throws IOException {
         HashMap<String, Object> map = new HashMap<>();
@@ -157,6 +155,7 @@ public class ArticleController {
      * 删除一篇文章
      */
     @PostMapping("/delArticle")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @ResponseBody
     public ResponseMessage delArticle(@RequestParam("id") int id, HttpSession session, @AuthenticationPrincipal Principal principal){
         LoginCheckUtil.check(principal);
@@ -169,6 +168,7 @@ public class ArticleController {
      * 删除多个文章
      */
     @PostMapping("/delArticles")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @ResponseBody
     public ResponseMessage delArticles(@RequestParam("articleIds[]") int[] articleIds, HttpSession session, @AuthenticationPrincipal Principal principal){
         LoginCheckUtil.check(principal);
@@ -183,6 +183,7 @@ public class ArticleController {
      * 修改一篇文章
      */
     @PostMapping("/updateArticle")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @ResponseBody
     public ResponseMessage updateArticle(Article article,HttpSession session,@AuthenticationPrincipal Principal principal){
         LoginCheckUtil.check(principal);
@@ -197,6 +198,7 @@ public class ArticleController {
      * 获取文章管理界面的文章列表
      */
     @GetMapping("/getArticlesInManager")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @ResponseBody
     public ResponseMessage getArticlesInManager(
             @RequestParam(value = "customTypeId",required = false) Integer customTypeId,
@@ -218,6 +220,7 @@ public class ArticleController {
      * 修改文章的文章分类
      */
     @PostMapping("/updateArticleCustomTypes")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @ResponseBody
     public ResponseMessage updateArticleCustomTypes(
             //注意这里接受数组参数的写法

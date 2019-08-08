@@ -9,7 +9,7 @@ layui.use(['jquery','form'],function () {
             }else if(value.length<6){
                 return "密码长度不能小于6";
             }else if(value.length>16){
-                return "密码长度不能小于16";
+                return "密码长度不能大于16";
             }
             if(value.trim().length===0){
                 return "新密码不能为空";

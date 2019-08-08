@@ -1,26 +1,37 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 
-<head th:replace="/html/common/common_head :: common_head(~{::title},~{::link},~{::script})" th:fragment="editor_head">
+<head th:replace="html/common/common_head :: common_head(~{::title},~{::link},~{::script})" th:fragment="editor_head">
     <title>设置</title>
     <!--editormd-->
-    <link rel="stylesheet" th:href="@{/webjars/editor.md/1.5.0/css/editormd.css}">
-    <link rel="stylesheet" th:href="@{/webjars/editor.md/1.5.0/css/editormd.logo.css}">
-    <link rel="stylesheet" th:href="@{/webjars/editor.md/1.5.0/css/editormd.preview.css}">
-    <script th:src="@{/webjars/jquery/3.1.1/jquery.js}"></script>
-    <script th:src="@{/webjars/editor.md/1.5.0/editormd.js}"></script>
+    <!--<link rel="stylesheet" th:href="@{/webjars/editor.md/1.5.0/css/editormd.css}">-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/editor.md@1.5.0/css/editormd.min.css">
+
+    <!--<link rel="stylesheet" th:href="@{/webjars/editor.md/1.5.0/css/editormd.logo.css}">-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/editor.md@1.5.0/css/editormd.logo.min.css">
+
+    <!--<link rel="stylesheet" th:href="@{/webjars/editor.md/1.5.0/css/editormd.preview.css}">-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/editor.md@1.5.0/css/editormd.preview.min.css">
+
+    <!--<script th:src="@{/webjars/jquery/3.1.1/jquery.js}"></script>-->
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+
+    <script th:src="@{/js/lib/ifvisible.min.js}"></script>
+    <!--<script th:src="@{/webjars/editor.md/1.5.0/editormd.min.js}"></script>-->
+    <script src="https://cdn.jsdelivr.net/npm/editor.md@1.5.0/editormd.min.js"></script>
+
 
     <!--自己的js-->
     <script th:src="@{/js/editor.js}"></script>
     <script th:src="@{/js/common/initEditormd.js}"></script>
-    <script th:src="@{/js/lib/ifvisible.min.js}"></script>
 
     <!--自己的css-->
     <link rel="stylesheet" th:href="@{/css/common/editor.css}">
 
 </head>
 <body>
-<div th:replace="/html/common/header::header"></div>
+<div th:replace="html/common/header::header"></div>
 <div class="main" th:fragment="editor">
     <form class="layui-form" id="form">
         <div class="title-div">
@@ -46,7 +57,7 @@
             <div class="layui-form-item">
                 <div id="my-editormd">
                     <!-- 书写与实时显示的textarea -->
-                    <!--<textarea id="my-editormd-markdown-doc" lay-verify="content" name="my-editormd-markdown-doc" style="display:none;"></textarea>-->
+                    <textarea id="my-editormd-markdown-doc" lay-verify="content" name="my-editormd-markdown-doc" style="display:none;"></textarea>
                     <!-- 用于后端获取md稳当内容，Java中：request.getParameter("my-editormd-html-code")。 -->
                     <!--<textarea id="my-editormd-html-code" name="my-editormd-html-code" style="display:none;"></textarea>-->
                 </div>

@@ -8,6 +8,7 @@ import lw.pers.myblog.model.SessionUserInfo;
 import lw.pers.myblog.service.CustomTypeService;
 import lw.pers.myblog.util.LoginCheckUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +37,7 @@ public class CustomTypeController {
      * 删除一个文章分类标签
      */
     @PostMapping("/delCustomType")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @ResponseBody
     public ResponseMessage delCustomType(@RequestParam("id")int id,@AuthenticationPrincipal Principal principal,HttpSession session){
         LoginCheckUtil.check(principal);
@@ -48,18 +50,30 @@ public class CustomTypeController {
      * 更新一个用户的所有文章分类
      */
     @PostMapping("/updateCustomTypes")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @ResponseBody
     public ResponseMessage updateCustomTypes(
             @RequestBody List<CustomType> customTypes,
             @AuthenticationPrincipal Principal principal,HttpSession session){
         LoginCheckUtil.check(principal);
-        SessionUserInfo userInfo = (SessionUserInfo) session.getAttribute("userInfo");
-        int userId = userInfo.getId();
-        for(CustomType customType: customTypes){
-            customType.setUserId(userId);
-        }
         customTypeService.saveCustomTypes(customTypes);
         return ResponseMessageUtil.success();
+    }
+
+
+    /**
+     * 获取个人分类列表及其包含的文章数目
+     */
+    @GetMapping("/getHasNumList")
+    @ResponseBody
+    public ResponseMessage getHasNumList(){
+        List<Object> list = customTypeService.getHasNumList();
+        return ResponseMessageUtil.success(list);
+    }
+
+    @GetMapping("/customTypes")
+    public String getArticlePage(){
+        return "html/customTypes";
     }
 }
 

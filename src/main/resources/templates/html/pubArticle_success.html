@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 
-<head th:replace="/html/common/common_head :: common_head(~{::title},~{::link},~{::script})">
+<head th:replace="html/common/common_head :: common_head(~{::title},~{::link},~{::script})">
     <title>设置</title>
     <link rel="stylesheet" th:href="@{/css/pubArticle_success.css}">
     <script th:inline="javascript">
@@ -10,7 +10,7 @@
 
 </head>
 <body>
-<div th:replace="/html/common/header::header"></div>
+<div th:replace="html/common/header::header"></div>
 <div class="main">
     <div class="main_wrapper">
         <div class="content">

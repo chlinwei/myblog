@@ -22,4 +22,9 @@ public interface CustomTypeService {
      * 保存用户的文章分类
      */
     public void saveCustomTypes(List<CustomType> customTypes);
+
+    /**
+     * 返回所有个人分类列表及其每个列表所包含的文章数目
+     */
+    public List<Object> getHasNumList();
 }

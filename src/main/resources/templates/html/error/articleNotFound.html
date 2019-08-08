@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head th:replace="html/common/common_head :: common_head(~{::link},~{},~{})"></head>
+<link  rel="stylesheet" th:href="@{/css/articleNotFound.css}">
+<body>
+<div th:replace="html/common/header::header"></div>
+
+<div class="main">
+    <div class="error">
+        <img th:src="@{/image/articleNotFound.jpg}" style="width:100%;height:100%;">
+        <p>您要查看的文章不存在或者已被删除了T_T</p>
+        <div>
+            <a th:href="@{/index}">返回首页</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

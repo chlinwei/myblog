@@ -27,7 +27,7 @@
     </select>
     
     <delete id="delArticleById">
-        DELETE FROM article WHERE id=#{id} AND userId=#{userId}
+        DELETE FROM article WHERE id=#{id}
     </delete>
     
     <update id="updateArticle" parameterType="lw.pers.myblog.model.Article">
@@ -42,7 +42,7 @@
         WHERE id=#{id} AND userId=#{userId}
     </update>
 
-    <select id="getArticlesByUserId" resultType="lw.pers.myblog.model.Article">
+    <select id="getArticlesInManager" resultType="lw.pers.myblog.model.Article">
         select * from  article
         <where>
 
@@ -59,15 +59,14 @@
         update article set customTypeId=#{customTypeId} WHERE userId=#{userId} and id=#{id};
     </update>
 
-    <select id="getlatestArticlesInSomeone" resultType="lw.pers.myblog.model.Article">
-        select * from article WHERE userId=#{userId} ORDER BY id desc limit #{num}
-    </select>
-
-    <select id="countArticles" resultType="java.lang.Integer">
-        select count(*) FROM  article WHERE userId=#{userId}
-    </select>
     <select id="getAllArticle" resultType="lw.pers.myblog.model.Article">
-        select * from article ORDER BY id desc
+        select * from article
+        <where>
+            <if test="customTypeId!=null">
+                and customTypeId = #{customTypeId}
+            </if>
+        </where>
+        ORDER BY id desc
     </select>
     
     <select id="getlatestArticles" resultType="lw.pers.myblog.model.Article">
@@ -77,7 +76,22 @@
     <select id="getAllArticleNum" resultType="java.lang.Integer">
         select count(*) from article;
     </select>
-    <select id="getArticleByUserIdAndId" resultType="lw.pers.myblog.model.Article">
-        select * from article WHERE id=#{id} and userId=#{userId};
+
+    <select id="getArticleTitleByArticleId" resultType="java.lang.String">
+        select articleTitle from article WHERE id=#{articleId}
+    </select>
+
+    <select id="findArchiveNameAndArticleNum" resultType="lw.pers.myblog.model.Archive">
+        select  DATE_FORMAT(createTime,'%Y年%m月') archiveTime  ,count(*) num from article group by DATE_FORMAT(createTime,'%Y-%m') ORDER BY createTime desc
+    </select>
+
+    <select id="getArticlesByYearMonth" resultType="lw.pers.myblog.model.Article">
+        select * from article
+        <where>
+            <if test="yearMonth!=null">
+                and DATE_FORMAT(createTime,"%Y-%m")=#{yearMonth}
+            </if>
+        </where>
+        order by createTime desc,id desc
     </select>
 </mapper>

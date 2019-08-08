@@ -9,27 +9,34 @@ public interface DraftService {
     /**
      * 获取草稿表列表
      */
-    public Map<String,Object> getDraftList(int userId, int pageNum, int pageSize);
+    public Map<String,Object> getDraftList(int pageNum, int pageSize);
+
+
+    /**
+     * 判断草稿是否存在
+     */
+    public boolean draftIsExist(int draftId);
 
     /**
      * 删除一条草稿
      */
-    public void delOne(int id, int userId);
+    public void delOne(int id);
 
     /**
      * 删除几篇草稿
      */
-    public void delMany(int[] ids, int userId);
+    public void delMany(int[] ids);
 
     /**
      * 获取一篇草稿
      */
-    public  Map<String,Object> getOne(int id, int userId);
+    public  Map<String,Object> getOne(int id);
 
     /**
-     * 判断某个用户是否有这篇草稿
+     * 获取草稿和个人分类
      */
-    public boolean userHasDraft(int draftId, int userId);
+    public Map<String,Object> getDraftAndCustomTypes(int id);
+
 
     /**
      * 保存一篇草稿

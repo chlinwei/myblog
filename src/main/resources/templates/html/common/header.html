@@ -6,7 +6,7 @@
     <link rel="stylesheet" th:href="@{/webjars/layui/2.4.5/css/layui.css}">
     <link rel="stylesheet" th:href="@{/css/common/common.css}">
     <link rel="stylesheet" th:href="@{/css/common/header.css}">
-    <link rel="stylesheet" th:href="@{/css/login.css}">
+
 
 
 </head>
@@ -19,26 +19,26 @@
                     <a th:href="@{/index}">首页</a>
                 </li>
                 <li class="layui-nav-item">
-                    <a th:href="@{/customType}">分类</a>
+                    <a th:href="@{/customTypes}">分类</a>
                 </li>
                 <li class="layui-nav-item">
                     <a th:href="@{/archives}">归档</a>
                 </li>
-                <li class="layui-nav-item">
-                    <a th:href="@{/tag}">标签</a>
-                </li>
+                <!--<li class="layui-nav-item">-->
+                    <!--<a th:href="@{/tag}">标签</a>-->
+                <!--</li>-->
 
                 <li class="layui-nav-item">
-                    <a th:href="@{/firendlink}">友链</a>
+                    <a th:href="@{/friendlylink}">友链</a>
                 </li>
-                <li class="layui-nav-item">
-                    <a th:href="@{/aboutme}">关于我</a>
-                </li>
+                <!--<li class="layui-nav-item">-->
+                    <!--<a th:href="@{/aboutme}">关于我</a>-->
+                <!--</li>-->
             </ul>
         </div>
         <div class="layui-col-md6" style="text-align: right">
             <ul class="layui-nav right">
-                <li class="layui-nav-item">
+                <li class="layui-nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
                     <a th:href="@{/editor}">写博客</a>
                 </li>
                 <li class="layui-nav-item" sec:authorize="!isAuthenticated()">

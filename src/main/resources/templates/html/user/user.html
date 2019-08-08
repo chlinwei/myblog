@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 
-<head th:replace="/html/common/common_head :: common_head(~{::title},~{::link},~{::script})">
+<head th:replace="html/common/common_head :: common_head(~{::title},~{::link},~{::script})">
     <title>林威博客</title>
     <link rel="stylesheet" th:href="@{/css/user/userInfo.css}">
     <link rel="stylesheet" th:href="@{/css/user/user.css}">
@@ -9,7 +9,7 @@
     <script th:src="@{/js/user/userInfo.js}"></script>
 </head>
 <body>
-<div th:replace="/html/common/header::header"></div>
+<div th:replace="html/common/header::header"></div>
 <!--公共侧边栏-->
 <div class="layui-side layui-bg-black" th:fragment="side">
     <link rel="stylesheet" th:href="@{/css/user/user.css}">
@@ -21,8 +21,9 @@
             <li class="layui-nav-item">
                 <a th:href="@{/user/securitySetting}">安全设置</a>
             </li>
-            <li class="layui-nav-item"><a th:href="@{/user/articleManager}">文章管理</a></li>
-            <li class="layui-nav-item"><a th:href="@{/user/customTypeManager}">个人分类</a></li>
+            <li class="layui-nav-item"><a th:href="@{/user/articleManager}" sec:authorize="hasRole('ROLE_ADMIN')">文章管理</a></li>
+            <li class="layui-nav-item"><a th:href="@{/user/draftManager}" sec:authorize="hasRole('ROLE_ADMIN')">草稿管理</a></li>
+            <li class="layui-nav-item"><a th:href="@{/user/customTypeManager}" sec:authorize="hasRole('ROLE_ADMIN')">个人分类</a></li>
         </ul>
     </div>
 </div>

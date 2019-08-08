@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 
-<head th:replace="/html/common/common_head :: common_head(~{::title},~{::link},~{::script})">
+<head th:replace="html/common/common_head :: common_head(~{::title},~{::link},~{::script})">
     <title>设置</title>
     <script th:src="@{/js/articleRead.js}"></script>
     <link rel="stylesheet" th:href="@{/css/articleRead.css}">
@@ -13,22 +13,47 @@
     <script th:src="@{/js/common/comment.js}"></script>
 
     <!--editormd编辑库-->
-    <script th:src="@{/webjars/jquery/3.1.1/jquery.js}"></script>
-    <link rel="stylesheet" th:href="@{/webjars/editor.md/1.5.0/css/editormd.css}">
-    <link rel="stylesheet" th:href="@{/webjars/editor.md/1.5.0/css/editormd.logo.css}">
-    <link rel="stylesheet" th:href="@{/webjars/editor.md/1.5.0/css/editormd.preview.css}">
-    <script th:src="@{/webjars/editor.md/1.5.0/editormd.js}"></script>
+    <!--<script th:src="@{/webjars/jquery/3.1.1/jquery.js}"></script>-->
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+
+    <!--<link rel="stylesheet" th:href="@{/webjars/editor.md/1.5.0/css/editormd.css}">-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/editor.md@1.5.0/css/editormd.min.css">
+
+    <!--<link rel="stylesheet" th:href="@{/webjars/editor.md/1.5.0/css/editormd.logo.css}">-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/editor.md@1.5.0/css/editormd.logo.min.css">
+
+    <!--<link rel="stylesheet" th:href="@{/webjars/editor.md/1.5.0/css/editormd.preview.css}">-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/editor.md@1.5.0/css/editormd.preview.min.css">
+
+    <!--<script th:src="@{/webjars/editor.md/1.5.0/editormd.min.js}"></script>-->
+    <script src="https://cdn.jsdelivr.net/npm/editor.md@1.5.0/editormd.min.js"></script>
     <!--editormd展示库,注意:下面引入的库是有顺序的-->
-    <script th:src="@{/webjars/editor.md/1.5.0/lib/marked.min.js}"></script>
-    <script th:src="@{/webjars/editor.md/1.5.0/lib/prettify.min.js}"></script>
-    <script th:src="@{/webjars/editor.md/1.5.0/lib/raphael.min.js}"></script>
-    <script th:src="@{/webjars/editor.md/1.5.0/lib/underscore.min.js}"></script>
-    <script th:src="@{/webjars/editor.md/1.5.0/lib/flowchart.min.js}"></script>
-    <script th:src="@{/webjars/editor.md/1.5.0/lib/jquery.flowchart.min.js}"></script>
-    <script th:src="@{/webjars/editor.md/1.5.0/lib/sequence-diagram.min.js}"></script>
+
+    <!--<script th:src="@{/webjars/editor.md/1.5.0/lib/marked.min.js}"></script>-->
+    <script src="https://cdn.jsdelivr.net/npm/editor.md@1.5.0/lib/marked.min.js"></script>
+
+
+    <!--<script th:src="@{/webjars/editor.md/1.5.0/lib/prettify.min.js}"></script>-->
+    <script src="https://cdn.jsdelivr.net/npm/editor.md@1.5.0/lib/prettify.min.js"></script>
+
+    <!--<script th:src="@{/webjars/editor.md/1.5.0/lib/raphael.min.js}"></script>-->
+    <script src="https://cdn.jsdelivr.net/npm/editor.md@1.5.0/lib/raphael.min.js"></script>
+
+    <!--<script th:src="@{/webjars/editor.md/1.5.0/lib/underscore.min.js}"></script>-->
+    <script src="https://cdn.jsdelivr.net/npm/editor.md@1.5.0/lib/underscore.min.js"></script>
+
+    <!--<script th:src="@{/webjars/editor.md/1.5.0/lib/flowchart.min.js}"></script>-->
+    <script src="https://cdn.jsdelivr.net/npm/editor.md@1.5.0/lib/flowchart.min.js"></script>
+
+    <!--<script th:src="@{/webjars/editor.md/1.5.0/lib/jquery.flowchart.min.js}"></script>-->
+    <script src="https://cdn.jsdelivr.net/npm/editor.md@1.5.0/lib/jquery.flowchart.min.js"></script>
+
+    <!--<script th:src="@{/webjars/editor.md/1.5.0/lib/sequence-diagram.min.js}"></script>-->
+    <script src="https://cdn.jsdelivr.net/npm/editor.md@1.5.0/lib/sequence-diagram.min.js"></script>
 </head>
 <body>
-<div th:replace="/html/common/header::header"></div>
+<div th:replace="html/common/header::header"></div>
 <div class="main">
     <div class="article">
         <div class="article-top">
@@ -37,8 +62,9 @@
                 <input type="hidden" class="authorId">
             </div>
             <div class="articleInfo-div">
-                <div id="articleType" class="articleType"></div>
-                <i class="layui-icon layui-icon-date" style="font-size:22px"><span id="createTime" style="font-size:14px;"></span></i>
+                <!--<div id="articleType" class="articleType"></div>-->
+                <span class="layui-badge" id="articleType">转载</span>
+                <a class="layui-icon layui-icon-date" style="font-size:22px"><span id="createTime" style="font-size:14px;"></span></a>
             </div>
         </div>
         <div class="article-content">
@@ -50,7 +76,7 @@
             <div class="div1">
                 <div class="div1-left"></div>
                 <div class="div1-right">
-                    <a id="customTypeName"></a>
+                    <a class="customType" id="customTypeName"></a>
                 </div>
                 <div class="layui-clear"></div>
             </div>
@@ -75,7 +101,10 @@
                         <i class="layui-icon layui-icon-praise like-icon"><span class="like" id="like">&nbsp;0</span></i>
                     </a>
                 </div>
-                <div class="div3-right"></div>
+                <div class="div3-right">
+                    <a sec:authorize="hasRole('ROLE_ADMIN')" style='cursor: pointer' class='removeBtn layui-btn layui-btn-danger layui-btn-sm'>删除</a>
+                    <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{'/update/'+${articleId}}" class='layui-btn layui-btn-sm editBtn'>修改</a>
+                </div>
                 <div class="layui-clear"></div>
             </div>
         </div>

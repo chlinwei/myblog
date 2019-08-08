@@ -2,6 +2,7 @@ layui.use(['jquery','comment','article','form'],function () {
     var $ = layui.$;
     var form = layui.form;
     var article = layui.article;
+    initEditor();
 
     //获取个人分类
     article.getCustomTypes(function (data) {
@@ -11,7 +12,6 @@ layui.use(['jquery','comment','article','form'],function () {
     });
 
     $(".draftBtn").click(function () {
-        console.log($(".authorId").val());
         if($(".draftId").val()==""){
             article.saveDraft(article.getPubArticle());
         }else{
@@ -25,6 +25,10 @@ layui.use(['jquery','comment','article','form'],function () {
         delete data.field["my-editormd-markdown-doc"];
         delete data.field["my-editormd-html-code"];
         data.field.articleTags = article.getTags().join(";");
+        var draftId = $(".draftId").val();
+        if(draftId!==""&&draftId!==null&&draftId!==undefined){
+            data.field.id = parseInt(draftId);
+        }
         article.pubArticle(data.field);
     });
 });

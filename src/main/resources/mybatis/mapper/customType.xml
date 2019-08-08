@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="lw.pers.myblog.dao.CustomTypeDao">
     <insert id="insertCustomType">
-        INSERT INTO customType(name, userId) VALUES (#{customType.name},#{customType.userId})
+        INSERT INTO customType(name) VALUES (#{customType.name})
     </insert>
 
     <select id="getAll" resultType="java.util.HashMap">
@@ -22,4 +22,8 @@
     <update id="updateCustomType">
         update customType set name=#{customType.name} WHERE id=#{customType.id}
     </update>
+
+    <select id="getHasNumList" resultType="java.util.Map">
+        select c.id,c.name,count(a.customTypeId) num  from customType c left join article a on a.customTypeId = c.id group by id ORDER BY num desc,c.id
+    </select>
 </mapper>

@@ -82,21 +82,6 @@ public class UserServiceImpl implements UserService{
         userDao.insertUser(user);
         //3.给用户设置角色
         userDao.insertRole(user.getId(), RoleConstant.ROLE_USER);
-
-
-        //4.给用户创建默认收藏夹
-        Collect collect = new Collect();
-        collect.setName("默认收藏夹");
-        collect.setUserId(user.getId());
-        collect.setIsDefault(1);
-        collectService.insertCollect(collect);
-
-
-        //5.创建文章分类
-        CustomType customType = new CustomType();
-        customType.setName("默认分类");
-        customType.setUserId(user.getId());
-        customTypeDao.insertCustomType(customType);
     }
 
 
@@ -131,22 +116,6 @@ public class UserServiceImpl implements UserService{
     public void updatePasswd(String newPasswd, String userName) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         String pwd = Md5.encodeByMd5(newPasswd);
         userDao.updatePasswd(pwd,userName);
-    }
-
-    @Override
-    public Map<String, Object> getUserInfoInUserBlog(int userId) {
-        User user = userDao.getUserInfoById(userId);
-        Map<String,Object> map = new HashMap<>();
-        map.put("id",user.getId());
-        map.put("userName",user.getUserName());
-        map.put("gender",user.getGender());
-        map.put("sign",user.getSign());
-        map.put("personalBrief",user.getPersonalBrief());
-        map.put("avaUrl", AvatarlUtil.getUrl(ftpHost,user.getAvatarImgUri()));
-        map.put("lastLoginTime",user.getLastLoginTime());
-        map.put("createTime",user.getCreateTime());
-        map.put("birthday",user.getBirthday());
-        return map;
     }
 
     @Override

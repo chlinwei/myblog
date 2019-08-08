@@ -2,6 +2,7 @@ layui.use(['jquery','comment','article','form'],function () {
     var $ = layui.$;
     var form = layui.form;
     var articleMod = layui.article;
+
     articleMod.getArticleAndCustomTypes(articleId,articleMod.getArticleAndCustomTypesDone);
 
     form.on('submit(pubBtn)',function (data) {

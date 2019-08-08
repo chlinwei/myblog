@@ -4,7 +4,8 @@ layui.use(['jquery','comment','article','form'],function () {
     var article = layui.article;
 
     //初始化编辑器
-    initEditor();
+    // initEditor();
+
     //表单验证
     form.verify({
         articleTitle:function (value) {
@@ -18,7 +19,7 @@ layui.use(['jquery','comment','article','form'],function () {
             }
         },
         customTypeId:function (value) {
-            if(value==0){
+            if(value==0||value===null){
                 return "个人分类不能为空";
             }
         }

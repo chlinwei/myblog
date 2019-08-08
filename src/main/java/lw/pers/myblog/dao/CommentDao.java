@@ -12,6 +12,11 @@ public interface CommentDao {
     List<Comment> getAllComments(@Param("topicType")int topicType,@Param("topicId") int topicId);
 
     /**
+     * 获取最新评论
+     */
+    List<Comment> getLatestComments();
+
+    /**
      * 获取评论总的数目
      */
     public int countComment();

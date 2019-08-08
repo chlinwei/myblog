@@ -1,0 +1,41 @@
+.main{
+    width:60%;
+    margin:50px auto;
+}
+.archiveList{
+    margin-top:30px;
+    margin-left:10px;
+}
+.archiveList .item{
+    margin-top: 6px;
+    padding: 3px;
+    font-size:16px;
+}
+
+.archiveList .num{
+    color:#b0b0b0;
+}
+.archiveList a{
+    padding-bottom: 2px;
+    border-bottom: 1px solid #999;
+}
+.articleTitle{
+    margin-right: 7px;
+    text-decoration: none;
+}
+.createTime{
+    font-size: 13px;
+}
+
+.articleTitle,.createTime{
+    color:rgba(0,0,0,.87);
+}
+.createTime{
+    color:rgb(0, 181, 173);
+}
+
+.articleNum{
+    color:#FF5722;
+    font-size:22px;
+    font-style: italic
+}

@@ -1,0 +1,10 @@
+DROP TABLE IF EXISTS `tag`;
+CREATE TABLE `tag`(
+  `id` int PRIMARY KEY AUTO_INCREMENT,
+  `name` VARCHAR(255) COMMENT '标签名称'
+)DEFAULT CHARSET=utf8;
+
+
+
+
+
