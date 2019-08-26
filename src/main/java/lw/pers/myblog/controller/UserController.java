@@ -8,6 +8,7 @@ import lw.pers.myblog.service.VisitorService;
 import lw.pers.myblog.service.impl.FtpService;
 import lw.pers.myblog.util.LoginCheckUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -135,6 +136,8 @@ public class UserController {
         return ResponseMessageUtil.success("密码修改成功");
     }
 
-
+    /**
+     * 返回所有用户
+     */
 }
 

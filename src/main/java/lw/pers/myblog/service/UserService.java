@@ -63,4 +63,9 @@ public interface UserService {
      * 修改用户最近登录时间
      */
     public void updateLastLoginTime(int userId);
+
+    /**
+     * 获取所有用户
+     */
+    public Map<String,Object> getAllUsers(int pageNum, int pageSize);
 }

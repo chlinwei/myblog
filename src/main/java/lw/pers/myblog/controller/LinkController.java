@@ -51,6 +51,15 @@ public class LinkController {
     }
 
     /**
+     * 用户管理界面
+     */
+    @GetMapping("/user/userManager")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    String userManager(){
+        return "html/user/userManager";
+    }
+
+    /**
      *文章编辑
      */
     @GetMapping("/editor")
@@ -82,4 +91,5 @@ public class LinkController {
     String archives(){
         return "html/archives";
     }
+
 }

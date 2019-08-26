@@ -1,5 +1,8 @@
 package lw.pers.myblog.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import lw.pers.myblog.constant.RoleConstant;
 import lw.pers.myblog.dao.CustomTypeDao;
 import lw.pers.myblog.dao.UserDao;
@@ -20,7 +23,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -121,5 +126,31 @@ public class UserServiceImpl implements UserService{
     @Override
     public void updateLastLoginTime(int userId) {
         userDao.updateLastLoginTime(userId);
+    }
+
+    @Override
+    public Map<String,Object> getAllUsers(int pageNum, int pageSize) {
+        Map<String,Object> returnValue = new HashMap<>();
+        Page page = PageHelper.startPage(pageNum,pageSize);
+        userDao.getAllUsers();
+        PageInfo<User> pageInfo = new PageInfo<User>(page);
+        List<User> users = pageInfo.getList();
+
+        //分页数据
+        returnValue.put("pageNum",pageInfo.getPageNum());
+        returnValue.put("pageSize",pageInfo.getPageSize());
+        returnValue.put("pages",pageInfo.getPages());
+        returnValue.put("total",pageInfo.getTotal());
+
+
+        //保存用户
+        List<Map> list = new ArrayList<>();
+
+        for(User user:users){
+            Map map = new HashMap<String,Object>();
+            map.put("userName",user.getUserName());
+//            map.put("角色",user.getRoles());
+        }
+        return null;
     }
 }

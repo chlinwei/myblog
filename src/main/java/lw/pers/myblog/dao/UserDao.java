@@ -42,4 +42,9 @@ public interface UserDao {
     //修改最近登录时间
     void updateLastLoginTime(@Param("userId")int userId);
 
+    /**
+     * 获取所有用户
+     */
+    void getAllUsers();
+
 }
