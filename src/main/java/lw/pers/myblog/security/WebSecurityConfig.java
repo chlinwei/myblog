@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import java.io.UnsupportedEncodingException;
@@ -24,6 +25,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new MyAuthenticationSuccessHandler();
     }
 
+    @Bean
+    AuthenticationFailureHandler myfailureHandler(){
+        return new MyAuthenticationFailureHandler();
+    }
     @Bean
     UserDetailsService myUserDetailsService(){
         return new UserDetailsServiceImpl();
@@ -71,7 +76,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginProcessingUrl("/doLogin")
                 //这里使用了successHandler,就不用defaultSuccessUrl,作用是登录成功了后初始化工作
                 .successHandler(mySuccessHandler())
-                .failureUrl("/login/error")
+                .failureHandler(myfailureHandler())
+//                .failureUrl("/login/error")
                 .and().authorizeRequests()
                 .antMatchers("/").permitAll()
                 .antMatchers("/register").permitAll()

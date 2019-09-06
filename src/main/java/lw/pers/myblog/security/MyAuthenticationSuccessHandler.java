@@ -6,7 +6,10 @@ import lw.pers.myblog.service.UserService;
 import lw.pers.myblog.util.AvatarlUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.savedrequest.SavedRequest;
 
@@ -22,6 +25,7 @@ import java.io.IOException;
 public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHandler{
     @Autowired
     private UserService userService;
+//    AuthenticationFailureHandler
 
     @Value("${ftp.host}")
     private String ftpHost;
@@ -57,7 +61,16 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
             redirectUrl = savedRequest.getRedirectUrl();
             session.removeAttribute("SPRING_SECURITY_SAVED_REQUEST");
         }
-        httpServletResponse.sendRedirect(redirectUrl);
+        JSONObject res = new JSONObject();
+        try {
+            res.put("code",0);
+            res.put("msg","登录成功");
+            res.put("url",redirectUrl);
+        } catch (JSONException e1) {
+            e1.printStackTrace();
+        }
+        httpServletResponse.setContentType("application/json;charset=UTF-8");
+        httpServletResponse.getWriter().write(res.toString());
     }
 }
 
