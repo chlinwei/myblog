@@ -66,7 +66,6 @@ layui.use(['jquery','comment','article','form','lwUtil','laypage'],function () {
                 pageSize:pageSize
             },
             success:function (data) {
-                console.log(data);
             }
         })
     }

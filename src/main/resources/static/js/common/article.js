@@ -41,6 +41,11 @@ layui.define(['laypage','layer','jquery','form'],function(exports){
                 articleTags:lw_obj.getTags().join(";"),
                 summary:$("textarea[name=summary]").val().trim()
             };
+            if(contextPath){
+                //如果不为空""
+                article.articleContent = article.articleContent.replace(new RegExp(contextPath,'g'),"");
+            }
+
             if(article.articleTitle.trim()===""){
                 article.articleTitle = "无标题文章";
             }
@@ -68,6 +73,9 @@ layui.define(['laypage','layer','jquery','form'],function(exports){
             })
         },
         pubArticle:function (article) {
+            if(contextPath){
+                article.articleContent = article.articleContent.replace(new RegExp(contextPath,'g'),"");
+            }
             $.ajax({
                 type:'post',
                 url:contextPath + "/pubDraft",

@@ -1,17 +1,21 @@
 package lw.pers.myblog.controller;
 
+import lw.pers.myblog.constant.FileType;
 import lw.pers.myblog.exception.ResponseMessage;
 import lw.pers.myblog.exception.ResponseMessageUtil;
 import lw.pers.myblog.model.Article;
 import lw.pers.myblog.model.SessionUserInfo;
 import lw.pers.myblog.service.ArticleService;
-import lw.pers.myblog.service.impl.FtpService;
+import lw.pers.myblog.service.UploadFileService;
+import lw.pers.myblog.util.ArticleUtil;
 import lw.pers.myblog.util.LoginCheckUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +25,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.security.Principal;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -29,10 +32,10 @@ import java.util.UUID;
 @Controller
 public class ArticleController {
     @Autowired
-    private FtpService ftpService;
+    private ArticleService articleService;
 
     @Autowired
-    private ArticleService articleService;
+    private UploadFileService uploadFileService;
 
     /**
      *查看一篇文章,返回文章显示界面,这里注意一个问题,就是关于路径变量articleId,由于thymeleaf是在controller后面执行的,
@@ -117,7 +120,7 @@ public class ArticleController {
     @PostMapping("/uploadArticleImage")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @ResponseBody
-    public Map<String,Object> uploadArticleImage(HttpSession session, @RequestParam("editormd-image-file") MultipartFile file, @AuthenticationPrincipal Principal principal, HttpServletResponse response) throws IOException {
+    public Map<String,Object> uploadArticleImage(HttpSession session, @RequestParam("editormd-image-file") MultipartFile file, @AuthenticationPrincipal Principal principal, HttpServletResponse response,HttpServletRequest request) throws IOException {
         HashMap<String, Object> map = new HashMap<>();
         if(file.isEmpty()){
             map.put("success",0);
@@ -138,8 +141,8 @@ public class ArticleController {
         String uri =  "";
         String url = "";
         try {
-            uri = ftpService.uploadFile(fileName, inputStream, "/articleImage");
-            url ="http://"+ftpService.getHost()+uri;
+            uri = uploadFileService.uploadfile(fileName,inputStream, FileType.articleFile);
+            url = request.getContextPath()+uri;
             map.put("success",1);
             map.put("message", "上传成功");
             map.put("url",url);
@@ -189,6 +192,7 @@ public class ArticleController {
         LoginCheckUtil.check(principal);
         SessionUserInfo userInfo = (SessionUserInfo) session.getAttribute("userInfo");
         article.setUserId(userInfo.getId());
+        ArticleUtil.delContextPathInContent(article);
         articleService.updateArticle(article);
         return ResponseMessageUtil.success();
     }

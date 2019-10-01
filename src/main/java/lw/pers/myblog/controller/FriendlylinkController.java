@@ -2,11 +2,12 @@ package lw.pers.myblog.controller;
 
 import lw.pers.myblog.exception.ResponseMessage;
 import lw.pers.myblog.exception.ResponseMessageUtil;
-import lw.pers.myblog.model.Friendlink;
-import lw.pers.myblog.service.FriendlinkService;
+import lw.pers.myblog.model.Friendlylink;
+import lw.pers.myblog.service.FriendlylinkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.List;
 public class FriendlylinkController {
 
     @Autowired
-    private FriendlinkService friendlinkService;
+    private FriendlylinkService friendlylinkService;
 
     /**
      * 返回所有友情链接
@@ -24,7 +25,16 @@ public class FriendlylinkController {
     @GetMapping("/getFriendlylinks")
     @ResponseBody
     public ResponseMessage getAllFriendlinks(){
-        List<Friendlink> links = friendlinkService.getAll();
+        List<Friendlylink> links = friendlylinkService.getAll();
         return ResponseMessageUtil.success(links);
     }
+    /**
+     * 添加一条链接
+     */
+    @PostMapping("/addFriendlyLink")
+    @ResponseBody
+    public ResponseMessage addFriendlyLink(){
+        return  null;
+    }
+
 }

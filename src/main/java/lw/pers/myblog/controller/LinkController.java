@@ -60,6 +60,16 @@ public class LinkController {
     }
 
     /**
+     *友情链接管理
+     */
+    @GetMapping("/user/friendlylinkManager")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    String friendlylinkManager(){
+        return "html/user/friendlylinkManager";
+
+    }
+
+    /**
      *文章编辑
      */
     @GetMapping("/editor")
@@ -91,5 +101,6 @@ public class LinkController {
     String archives(){
         return "html/archives";
     }
+
 
 }

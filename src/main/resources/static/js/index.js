@@ -111,7 +111,6 @@ layui.use(['jquery','comment','article','form','laypage','lwUtil'],function () {
      * 获取个人分类
      */
     articleMod.getCustomTypes(function (data) {
-        // console.log(data);
     });
 
     /**

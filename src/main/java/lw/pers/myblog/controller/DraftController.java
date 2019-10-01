@@ -5,12 +5,15 @@ import lw.pers.myblog.exception.ResponseMessageUtil;
 import lw.pers.myblog.model.Article;
 import lw.pers.myblog.model.SessionUserInfo;
 import lw.pers.myblog.service.DraftService;
+import lw.pers.myblog.util.ArticleUtil;
 import lw.pers.myblog.util.LoginCheckUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -56,6 +59,7 @@ public class DraftController {
         LoginCheckUtil.check(principal);
         SessionUserInfo userInfo = (SessionUserInfo) session.getAttribute("userInfo");
         article.setUserId(userInfo.getId());
+        ArticleUtil.delContextPathInContent(article);
         draftService.saveDraft(article);
         return ResponseMessageUtil.success(article.getId());
     }
@@ -93,6 +97,7 @@ public class DraftController {
         LoginCheckUtil.check(principal);
         SessionUserInfo userInfo = (SessionUserInfo) session.getAttribute("userInfo");
         article.setUserId(userInfo.getId());
+        ArticleUtil.delContextPathInContent(article);
         draftService.updateDraft(article);
         return ResponseMessageUtil.success();
     }
@@ -108,6 +113,7 @@ public class DraftController {
         LoginCheckUtil.check(principal);
         SessionUserInfo userInfo = (SessionUserInfo) session.getAttribute("userInfo");
         article.setUserId(userInfo.getId());
+        ArticleUtil.delContextPathInContent(article);
         draftService.pubDraft(article);
         return ResponseMessageUtil.success(article.getId());
     }

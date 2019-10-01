@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 
-<head th:replace="html/common/common_head :: common_head(~{::title},~{::link},~{::script})">
-    <title>设置</title>
+<head th:replace="html/common/common_head :: common_head(~{::title},~{::link},~{})">
+    <title>登录</title>
     <link rel="stylesheet" th:href="@{/css/login.css}">
-    <script th:src="@{/js/login.js}"></script>
 </head>
 <body>
 <div th:replace="html/common/header::header"></div>
@@ -13,7 +12,6 @@
         <span>欢迎登录</span>
     </div>
     <div class="login">
-        <!--<form class="layui-form" method="post"  th:action="@{/doLogin}">-->
             <div class="layui-form-item">
                 <div class="form-row">
                     <input type="text" name="userName" required  lay-verify="required" placeholder="用户名" class="layui-input" value="">
@@ -35,8 +33,8 @@
                     </div>
                 </div>
             </div>
-        <!--</form>-->
     </div>
 </div>
+<script th:src="@{/js/login.js}"></script>
 </body>
 </html>

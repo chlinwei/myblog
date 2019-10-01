@@ -1,6 +1,9 @@
 package lw.pers.myblog.security;
 
+import lw.pers.myblog.config.MyBlogConfig;
 import lw.pers.myblog.util.Md5;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -20,6 +23,8 @@ import java.security.NoSuchAlgorithmException;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Autowired
+    private MyBlogConfig myBlogConfig;
     @Bean
     AuthenticationSuccessHandler mySuccessHandler(){
         return new MyAuthenticationSuccessHandler();
@@ -83,6 +88,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/register").permitAll()
                 .antMatchers("/doRegister").permitAll()
                 .antMatchers("/login").permitAll()
+                .antMatchers(myBlogConfig.getThirdResource()+"/**").permitAll()
                 .antMatchers("/index").permitAll();
 //                .antMatchers("/editor","/draft/**","/update/**","/pubSuccess/**").hasRole("USER");
         http.rememberMe().tokenValiditySeconds(3600*24*10).authenticationSuccessHandler(mySuccessHandler());

@@ -1,13 +1,19 @@
 package lw.pers.myblog;
 
+import org.apache.tomcat.jni.User;
+
+import java.io.File;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MyTest {
     public static void main(String args[]){
-        String  str = "![](http://192.168.0.10/articleImage/34/70/0f305ec7-2606-4478-8b39-f395bbca5d51.jpg)你好嘻嘻嘻![](http://192.168.0.10/articleImage/34/70/0f305ec7-2606-4478-8b39-f395bbca5d51.jpg)";
-        String value = str.replaceAll("(!\\[\\]\\(http://)(.*?/)","$1www.baidu.com/");
-        System.out.println(value);
-        System.out.println(str);
+        File file = new File("/web1");
+        if (!file.isDirectory()) {
+            System.out.println("不存在");
+        }else{
+            System.out.println("存在");
+            System.out.println(file.getAbsoluteFile());
+        }
     }
 }

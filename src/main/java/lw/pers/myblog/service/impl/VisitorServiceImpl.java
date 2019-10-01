@@ -18,9 +18,6 @@ import java.util.Map;
 
 @Service
 public class VisitorServiceImpl implements VisitorService{
-    @Value("${ftp.host}")
-    private String ftpHost;
-
     @Autowired
     private UserDao userDao;
 
@@ -39,7 +36,7 @@ public class VisitorServiceImpl implements VisitorService{
             User user = userDao.getUserById(visitor.getVisitorId());
             map.put("visitorName",user.getUserName());
 
-            map.put("visitorAvatarUrl", AvatarlUtil.getUrl(ftpHost,user.getAvatarImgUri()));
+            map.put("visitorAvatarUrl",AvatarlUtil.addContextPath(user.getAvatarImgUri()));
             list.add(map);
         }
         return list;

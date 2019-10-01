@@ -15,7 +15,6 @@ import lw.pers.myblog.service.LikeService;
 import lw.pers.myblog.service.UserService;
 import lw.pers.myblog.util.AvatarlUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -44,10 +43,6 @@ public class CommentServiceImpl implements CommentService{
 
     @Autowired
     private ArticleService articleService;
-
-
-    @Value("${ftp.host}")
-    private String ftpHost;
 
     @Override
     @Transactional
@@ -102,7 +97,7 @@ public class CommentServiceImpl implements CommentService{
             fromUserVo.put("id",fromUser.getId());
             fromUserVo.put("userName",fromUser.getUserName());
             fromUserVo.put("gender",fromUser.getGender());
-            fromUserVo.put("url", AvatarlUtil.getUrl(ftpHost,fromUser.getAvatarImgUri()));
+            fromUserVo.put("url", AvatarlUtil.addContextPath(fromUser.getAvatarImgUri()));
             map.put("fromUserVo",fromUserVo);
 
             //回复
@@ -137,7 +132,7 @@ public class CommentServiceImpl implements CommentService{
                 replyFromUserVo.put("id",replyFromUser.getId());
                 replyFromUserVo.put("userName",replyFromUser.getUserName());
                 replyFromUserVo.put("gender",replyFromUser.getGender());
-                replyFromUserVo.put("url",AvatarlUtil.getUrl(ftpHost,replyFromUser.getAvatarImgUri()));
+                replyFromUserVo.put("url",AvatarlUtil.addContextPath(replyFromUser.getAvatarImgUri()));
                 replyMap.put("replyFromUserVo",replyFromUserVo);
 
 

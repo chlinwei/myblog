@@ -7,13 +7,16 @@ import lw.pers.myblog.dao.CustomTypeDao;
 import lw.pers.myblog.dao.DraftDao;
 import lw.pers.myblog.model.Article;
 import lw.pers.myblog.model.CustomType;
-import lw.pers.myblog.properties.FtpProperties;
 import lw.pers.myblog.service.ArticleService;
 import lw.pers.myblog.service.DraftService;
+import lw.pers.myblog.util.ArticleUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,9 +25,6 @@ import java.util.Map;
 
 @Service
 public class DraftServiceImpl implements DraftService {
-
-    @Autowired
-    FtpProperties ftpProperties;
 
     @Autowired
     private DraftDao draftDao;
@@ -105,10 +105,9 @@ public class DraftServiceImpl implements DraftService {
         map.put("id",article.getId());
         map.put("articleType",article.getArticleType());
         map.put("articleTitle",article.getArticleTitle());
-        String content = article.getArticleContent();
-        String pattern  = "(!\\[\\]\\(http://)(.*?/)";
-        content = content.replaceAll(pattern,"$1"+ftpProperties.getHost()+"/");
-        map.put("articleContent",content);
+
+        ArticleUtil.addContextPathInContent(article);
+        map.put("articleContent",article.getArticleContent());
 
         if(customType!=null) {
             map.put("customTypeId", article.getCustomTypeId());

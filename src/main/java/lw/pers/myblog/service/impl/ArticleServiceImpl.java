@@ -10,27 +10,26 @@ import lw.pers.myblog.exception.MyException;
 import lw.pers.myblog.model.Archive;
 import lw.pers.myblog.model.Article;
 import lw.pers.myblog.model.CustomType;
-import lw.pers.myblog.model.User;
-import lw.pers.myblog.properties.FtpProperties;
 import lw.pers.myblog.service.ArticleService;
 import lw.pers.myblog.service.CollectService;
 import lw.pers.myblog.service.CommentService;
 import lw.pers.myblog.service.LikeService;
-import lw.pers.myblog.util.AvatarlUtil;
+import lw.pers.myblog.util.ArticleUtil;
 import lw.pers.myblog.util.SummaryUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
 public class ArticleServiceImpl implements ArticleService {
-    @Autowired
-    FtpProperties ftpProperties;
     @Autowired
     private ArticleDao articleDao;
 
@@ -55,9 +54,6 @@ public class ArticleServiceImpl implements ArticleService {
     @Autowired
     private CommentService commentService;
 
-    @Value("${ftp.host}")
-    private String ftpHost;
-
     @Override
     public void saveArticle(Article article) {
         articleDao.insertArticle(article);
@@ -72,10 +68,9 @@ public class ArticleServiceImpl implements ArticleService {
         map.put("articleTitle",article.getArticleTitle());
         map.put("id",article.getId());
         //内容
-        String content = article.getArticleContent();
-        String pattern  = "(!\\[\\]\\(http://)(.*?/)";
-        content = content.replaceAll(pattern,"$1"+ftpProperties.getHost()+"/");
-        map.put("articleContent",content);
+        ArticleUtil.addContextPathInContent(article);
+        map.put("articleContent",article.getArticleContent());
+        //标签
         map.put("articleTags",article.getArticleTags());
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String createTime = format.format(article.getCreateTime());
@@ -196,10 +191,8 @@ public class ArticleServiceImpl implements ArticleService {
         map.put("articleType",article.getArticleType());
         map.put("articleTitle",article.getArticleTitle());
         //内容
-        String content = article.getArticleContent();
-        String pattern  = "(!\\[\\]\\(http://)(.*?/)";
-        content = content.replaceAll(pattern,"$1"+ftpProperties.getHost()+"/");
-        map.put("articleContent",content);
+        ArticleUtil.addContextPathInContent(article);
+        map.put("articleContent",article.getArticleContent());
 
         if(customType!=null) {
             map.put("customTypeId", article.getCustomTypeId());

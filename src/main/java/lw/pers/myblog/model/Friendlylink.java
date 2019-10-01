@@ -1,6 +1,6 @@
 package lw.pers.myblog.model;
 
-public class Friendlink {
+public class Friendlylink {
     private Integer id;
     private String name;
     private String url;

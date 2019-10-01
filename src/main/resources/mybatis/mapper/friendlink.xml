@@ -2,8 +2,13 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="lw.pers.myblog.dao.FriendlinkDao">
-    <select id="getAll" resultType="lw.pers.myblog.model.Friendlink">
+<mapper namespace="lw.pers.myblog.dao.FriendlylinkDao">
+    <select id="getAll" resultType="lw.pers.myblog.model.Friendlylink">
         SELECT * FROM friendlink;
     </select>
+    
+    <insert id="addOne">
+        INSERT into friendlink(name,url) VALUES (#{name},#{url})
+    </insert>
+
 </mapper>

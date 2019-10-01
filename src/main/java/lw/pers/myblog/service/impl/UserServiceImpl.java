@@ -42,9 +42,6 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private HttpServletRequest request;
 
-    @Value("${ftp.host}")
-    private String ftpHost;
-
     @Override
     public User findUserById(int id) {
         return userDao.getUserById(id);

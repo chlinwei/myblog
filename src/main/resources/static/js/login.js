@@ -12,7 +12,6 @@ layui.use(['jquery'],function () {
             },
             success:function (data) {
                 if(data.code===0){
-                    console.log(data.url);
                     window.location.href=data.url;
 
                 }else{

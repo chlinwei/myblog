@@ -25,23 +25,22 @@ import java.io.IOException;
 public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHandler{
     @Autowired
     private UserService userService;
-//    AuthenticationFailureHandler
-
-    @Value("${ftp.host}")
-    private String ftpHost;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
 
-        System.out.println("登录成功");
         HttpSession session = httpServletRequest.getSession();
         //将个人信息保存在session
         String userName = authentication.getName();
         User user = userService.findUserByUserName(userName);
         SessionUserInfo userInfo = new SessionUserInfo();
         String imgUri = user.getAvatarImgUri();
-        String url = AvatarlUtil.getUrl(ftpHost,imgUri);
-        userInfo.setAvatarUrl(url);
+        if(imgUri==null||"".equals(imgUri)){
+            imgUri = httpServletRequest.getContextPath()+"/image/avatar.png ";
+        }else{
+            imgUri = AvatarlUtil.addContextPath(imgUri);
+        }
+        userInfo.setAvatarUrl(imgUri);
         userInfo.setId(user.getId());
         userInfo.setUserName(user.getUserName());
         session.setAttribute("userInfo",userInfo);

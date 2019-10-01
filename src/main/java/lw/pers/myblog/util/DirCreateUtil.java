@@ -1,5 +1,6 @@
 package lw.pers.myblog.util;
 
+import java.io.File;
 import java.util.Random;
 
 /**
@@ -13,7 +14,7 @@ public class DirCreateUtil {
         //随机生成1~n1,1~n2间的数
         String s1 = String.valueOf(random.nextInt(n1) + 1);
         String s2 = String.valueOf(random.nextInt(n2) + 1);
-        return "/" + s1 + "/" + s2;
+        return "/"+ s1 + "/" + s2;
     }
     public static void main(String args[]){
         System.out.println(direCreate());

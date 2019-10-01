@@ -1,14 +1,15 @@
 package lw.pers.myblog.controller;
 
+import lw.pers.myblog.constant.FileType;
 import lw.pers.myblog.exception.*;
 import lw.pers.myblog.model.SessionUserInfo;
 import lw.pers.myblog.model.User;
+import lw.pers.myblog.service.UploadFileService;
 import lw.pers.myblog.service.UserService;
 import lw.pers.myblog.service.VisitorService;
-import lw.pers.myblog.service.impl.FtpService;
+import lw.pers.myblog.util.AvatarlUtil;
 import lw.pers.myblog.util.LoginCheckUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -34,12 +35,13 @@ import java.util.UUID;
 @Controller
 public class UserController {
     @Autowired
-    private FtpService ftpService;
-    @Autowired
     private UserService userService;
 
     @Autowired
     private VisitorService visitorService;
+
+    @Autowired
+    private UploadFileService uploadFileService;
     /**
      * 获取个人信息
      */
@@ -97,14 +99,16 @@ public class UserController {
         fileName = UUID.randomUUID()+suffixName;
         //上传文件
         InputStream inputStream = file.getInputStream();
-        String uri = ftpService.uploadFile(fileName, inputStream, "/useravatar");
+
+
+        String uri = uploadFileService.uploadfile(fileName, inputStream, FileType.avatarFile);
+        userService.updateAvatarImgUri(userName,uri);
+
         //情况1:此时如果数据库保存uri失败,此时刚上传的文件需要被清理掉
         //情况2:如果是以前的头像文件还在,也需要清理掉
         //后面再解决
-        userService.updateAvatarImgUri(userName, uri);
-        String url ="http://"+ftpService.getHost()+uri;
         SessionUserInfo userInfo = (SessionUserInfo) session.getAttribute("userInfo");
-        userInfo.setAvatarUrl(url);
+        userInfo.setAvatarUrl(AvatarlUtil.addContextPath(uri));
         return ResponseMessageUtil.success();
     }
 
@@ -113,14 +117,15 @@ public class UserController {
      */
     @GetMapping("/getAvatar")
     @ResponseBody
-    public ResponseMessage getAvatar(@AuthenticationPrincipal Principal principal, HttpServletRequest request){
+    public ResponseMessage getAvatar(@AuthenticationPrincipal Principal principal){
         String userName = principal.getName();
-        String url = userService.getAvatarImgUri(userName);
-        if("".equals(url)){
-          return ResponseMessageUtil.error("该用户没有头像");
+        String imgUri = userService.getAvatarImgUri(userName);
+        if("".equals(imgUri)){
+            return ResponseMessageUtil.error("该用户没有头像");
         }
-        String host = ftpService.getHost();
-        return ResponseMessageUtil.success("http://"+host+url);
+        imgUri = AvatarlUtil.addContextPath(imgUri);
+        System.out.println("用户头像:"+imgUri);
+        return ResponseMessageUtil.success(imgUri);
     }
     /**
      * 修改密码
